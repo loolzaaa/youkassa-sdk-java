@@ -2,7 +2,6 @@ package ru.loolzaaa.youkassa.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.JsonNode;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,6 +9,7 @@ import lombok.NoArgsConstructor;
 import ru.loolzaaa.youkassa.client.RequestValidated;
 import ru.loolzaaa.youkassa.pojo.Amount;
 import ru.loolzaaa.youkassa.pojo.CancellationDetails;
+import ru.loolzaaa.youkassa.pojo.Card;
 
 import java.util.Map;
 
@@ -25,9 +25,9 @@ public class Payout implements RequestValidated {
     @JsonProperty("status")
     private String status;
     @JsonProperty("payout_destination")
-    private JsonNode payoutDestination;
+    private PayoutDestination payoutDestination;
     @JsonProperty("payout_destination_data")
-    private JsonNode payoutDestinationData;
+    private PayoutDestination payoutDestinationData;
     @JsonProperty("payout_token")
     private String payoutToken;
     @JsonProperty("payment_method_id")
@@ -97,6 +97,32 @@ public class Payout implements RequestValidated {
         private String url;
         @JsonProperty("amount")
         private Amount amount;
+    }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class PayoutDestination {
+        @JsonProperty("type")
+        private String type;
+        @JsonProperty("bank_id")
+        private String bankId;
+        @JsonProperty("phone")
+        private String phone;
+        @JsonProperty("recipient_checked")
+        private boolean recipientChecked;
+        @JsonProperty("account_number")
+        private String accountNumber;
+        @JsonProperty("card")
+        private Card card;
+
+        public static class Type {
+            public static final String BANK_CARD = "bank_card";
+            public static final String SBP = "spb";
+            public static final String YOO_MONEY = "yoo_money";
+        }
     }
 
     @Override

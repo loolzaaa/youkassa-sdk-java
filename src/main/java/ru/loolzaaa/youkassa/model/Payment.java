@@ -2,7 +2,6 @@ package ru.loolzaaa.youkassa.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -34,9 +33,9 @@ public class Payment implements RequestValidated {
     @JsonProperty("recipient")
     private Recipient recipient;
     @JsonProperty("payment_method")
-    private ObjectNode paymentMethod;
+    private PaymentMethod paymentMethod;
     @JsonProperty("payment_method_data")
-    private ObjectNode paymentMethodData;
+    private PaymentMethod paymentMethodData;
     @JsonProperty("payment_method_id")
     private String paymentMethodId;
     @JsonProperty("payment_token")
@@ -102,6 +101,47 @@ public class Payment implements RequestValidated {
     public static class FraudData {
         @JsonProperty("topped_up_phone")
         private String toppedUpPhone;
+    }
+
+    public static class PaymentMethod {
+        @JsonProperty("type")
+        private String type;
+        @JsonProperty("id")
+        private String id;
+        @JsonProperty("saved")
+        private boolean saved;
+        @JsonProperty("title")
+        private String title;
+        @JsonProperty("discount_amount")
+        private Amount discountAmount;
+        @JsonProperty("loan_option")
+        private String loanOption;
+        @JsonProperty("logine")
+        private String login;
+        @JsonProperty("account_number")
+        private String accountNumber;
+        @JsonProperty("phone")
+        private String phone;
+        @JsonProperty("card")
+        private Card card;
+
+        public static class Type {
+            public static final String SBER_LOAN = "sber_loan";
+            public static final String ALPHA_CLICK = "alfabank";
+            public static final String MOBILE_BALANCE = "mobile_balance";
+            public static final String BANK_CARD = "bank_card";
+            public static final String INSTALLMENTS = "installments";
+            public static final String CASH = "cash";
+            public static final String SBP = "sbp";
+            public static final String TINKOFF_BANK = "tinkoff_bank";
+            public static final String YOO_MONEY = "yoo_money";
+            public static final String APPLE_PAY = "apple_pay";
+            public static final String GOOGLE_PAY = "google_pay";
+            public static final String QIWI = "qiwi";
+            public static final String SBER_PAY = "sberbank";
+            public static final String WECHAT = "wechat";
+            public static final String WEBMONEY = "webmoney";
+        }
     }
 
     @Override
