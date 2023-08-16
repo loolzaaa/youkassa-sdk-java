@@ -48,6 +48,8 @@ public class Item {
     private String markMode;
     @JsonProperty("payment_subject_industry_details")
     private List<PaymentSubjectIndustryDetail> paymentSubjectIndustryDetails;
+    @JsonProperty("additional_payment_subject_props")
+    private String additionalPaymentSubjectProps;
 
     @Getter
     @Builder
