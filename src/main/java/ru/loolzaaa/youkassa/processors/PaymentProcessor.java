@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import ru.loolzaaa.youkassa.client.ApiClient;
 import ru.loolzaaa.youkassa.client.PaginatedResponse;
 import ru.loolzaaa.youkassa.model.Payment;
-import ru.loolzaaa.youkassa.pojo.CapturePayment;
 
 import java.util.Map;
 import java.util.UUID;
@@ -39,18 +38,18 @@ public class PaymentProcessor {
         return client.sendRequest("POST", BASE_PATH, Map.of("Idempotence-Key", idempotencyKey), paymentParams, Payment.class);
     }
 
-    public Payment capture(String paymentId, CapturePayment capturePayment, String idempotencyKey) {
+    public Payment capture(String paymentId, Payment paymentParams, String idempotencyKey) {
         if (paymentId == null || paymentId.isEmpty()) {
             throw new IllegalArgumentException("paymentId must not be null or empty");
         }
-        if (capturePayment == null) {
+        if (paymentParams == null) {
             throw new IllegalArgumentException("paymentParams must not be null");
         }
         if (idempotencyKey == null) {
             idempotencyKey = UUID.randomUUID().toString();
         }
         String path = BASE_PATH + "/" + paymentId + "/capture";
-        return client.sendRequest("POST", path, Map.of("Idempotence-Key", idempotencyKey), capturePayment, Payment.class);
+        return client.sendRequest("POST", path, Map.of("Idempotence-Key", idempotencyKey), paymentParams, Payment.class);
     }
 
     public Payment cancel(String paymentId, String idempotencyKey) {

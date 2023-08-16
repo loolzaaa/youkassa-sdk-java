@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ru.loolzaaa.youkassa.client.RequestValidated;
+import ru.loolzaaa.youkassa.pojo.Receipt;
 import ru.loolzaaa.youkassa.pojo.*;
 
 import java.util.List;
@@ -28,10 +29,22 @@ public class Payment implements RequestValidated {
     private Amount incomeAmount;
     @JsonProperty("description")
     private String description;
+    @JsonProperty("receipt")
+    private Receipt receipt;
     @JsonProperty("recipient")
     private Recipient recipient;
     @JsonProperty("payment_method")
     private ObjectNode paymentMethod;
+    @JsonProperty("payment_method_data")
+    private ObjectNode paymentMethodData;
+    @JsonProperty("payment_method_id")
+    private String paymentMethodId;
+    @JsonProperty("payment_token")
+    private String paymentToken;
+    @JsonProperty("save_payment_method")
+    private boolean savePaymentMethod;
+    @JsonProperty("capture")
+    private boolean capture;
     @JsonProperty("captured_at")
     private String capturedAt;
     @JsonProperty("created_at")
@@ -50,8 +63,12 @@ public class Payment implements RequestValidated {
     private boolean refundable;
     @JsonProperty("receipt_registration")
     private String receiptRegistration;
+    @JsonProperty("client_ip")
+    private String clientIp;
     @JsonProperty("metadata")
     private Map<String, String> metadata;
+    @JsonProperty("airline")
+    private Airline airline;
     @JsonProperty("cancellation_details")
     private CancellationDetails cancellationDetails;
     @JsonProperty("authorization_details")
@@ -60,6 +77,8 @@ public class Payment implements RequestValidated {
     private List<Transfer> transfers;
     @JsonProperty("deal")
     private Deal deal;
+    @JsonProperty("fraud_data")
+    private FraudData fraudData;
     @JsonProperty("merchant_customer_id")
     private String merchantCustomerId;
 
@@ -75,11 +94,18 @@ public class Payment implements RequestValidated {
         private List<Settlement> settlements;
     }
 
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class FraudData {
+        @JsonProperty("topped_up_phone")
+        private String toppedUpPhone;
+    }
+
     @Override
     public void validate() {
-        if (amount == null) {
-            throw new NullPointerException("Payment amount not specified");
-        }
-        //TODO: add another checks
+        //
     }
 }

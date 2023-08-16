@@ -17,6 +17,8 @@ public class Confirmation {
     private String confirmationToken;
     @JsonProperty("confirmation_url")
     private String confirmationUrl;
+    @JsonProperty("confirmation_data")
+    private String confirmationData;
     @JsonProperty("enforce")
     private boolean enforce;
     @JsonProperty("locale")
@@ -26,6 +28,9 @@ public class Confirmation {
 
     public static class Type {
         public static final String EMBEDDED = "embedded";
+        public static final String EXTERNAL = "external";
+        public static final String MOBILE_APPLICATION = "mobile_application";
+        public static final String QR_CODE = "qr";
         public static final String REDIRECT = "redirect";
     }
 }
