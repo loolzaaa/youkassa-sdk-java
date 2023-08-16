@@ -5,22 +5,17 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import ru.loolzaaa.youkassa.client.RequestValidated;
+import ru.loolzaaa.youkassa.client.RequestBody;
 
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Webhook implements RequestValidated {
+public class Webhook implements RequestBody {
     @JsonProperty("id")
     private String id;
     @JsonProperty("event")
     private String event;
     @JsonProperty("url")
     private String url;
-
-    @Override
-    public void validate() {
-        //
-    }
 }

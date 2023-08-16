@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import ru.loolzaaa.youkassa.client.RequestValidated;
+import ru.loolzaaa.youkassa.client.RequestBody;
 import ru.loolzaaa.youkassa.pojo.Amount;
 
 import java.util.Map;
@@ -14,7 +14,7 @@ import java.util.Map;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Deal implements RequestValidated {
+public class Deal implements RequestBody {
     @JsonProperty("id")
     private String id;
     @JsonProperty("type")
@@ -37,9 +37,4 @@ public class Deal implements RequestValidated {
     private Map<String, String> metadata;
     @JsonProperty("test")
     private boolean test;
-
-    @Override
-    public void validate() {
-        //
-    }
 }

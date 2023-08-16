@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import ru.loolzaaa.youkassa.client.RequestValidated;
+import ru.loolzaaa.youkassa.client.RequestBody;
 import ru.loolzaaa.youkassa.pojo.Amount;
 import ru.loolzaaa.youkassa.pojo.CancellationDetails;
 import ru.loolzaaa.youkassa.pojo.Card;
@@ -17,7 +17,7 @@ import java.util.Map;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Payout implements RequestValidated {
+public class Payout implements RequestBody {
     @JsonProperty("id")
     private String id;
     @JsonProperty("amount")
@@ -123,10 +123,5 @@ public class Payout implements RequestValidated {
             public static final String SBP = "spb";
             public static final String YOO_MONEY = "yoo_money";
         }
-    }
-
-    @Override
-    public void validate() {
-        //
     }
 }

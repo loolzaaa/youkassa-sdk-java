@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import ru.loolzaaa.youkassa.client.RequestValidated;
+import ru.loolzaaa.youkassa.client.RequestBody;
 import ru.loolzaaa.youkassa.pojo.*;
 
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Receipt implements RequestValidated {
+public class Receipt implements RequestBody {
     @JsonProperty("id")
     private String id;
     @JsonProperty("type")
@@ -65,10 +65,5 @@ public class Receipt implements RequestValidated {
         private String name;
         @JsonProperty("value")
         private String value;
-    }
-
-    @Override
-    public void validate() {
-        //
     }
 }

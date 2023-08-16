@@ -30,7 +30,7 @@ public class ApiClient {
     private final String endpoint;
     private final Supplier<String> authHeaderSupplier;
 
-    public <T> T sendRequest(String method, String path, Map<String, String> headers, RequestValidated body, Class<T> responseClass) {
+    public <T> T sendRequest(String method, String path, Map<String, String> headers, RequestBody body, Class<T> responseClass) {
         String response = execute(method, path, headers, body);
         try {
             return mapper.readValue(response, responseClass);
@@ -39,7 +39,7 @@ public class ApiClient {
         }
     }
 
-    public <T> T sendRequest(String method, String path, Map<String, String> headers, RequestValidated body, TypeReference<T> typeReference) {
+    public <T> T sendRequest(String method, String path, Map<String, String> headers, RequestBody body, TypeReference<T> typeReference) {
         String response = execute(method, path, headers, body);
         try {
             return mapper.readValue(response, typeReference);
@@ -48,11 +48,7 @@ public class ApiClient {
         }
     }
 
-    private String execute(String method, String path, Map<String, String> headers, RequestValidated body) {
-        if (body != null) {
-            body.validate();
-        }
-
+    private String execute(String method, String path, Map<String, String> headers, RequestBody body) {
         HttpRequest.Builder requestBuilder = HttpRequest.newBuilder(URI.create(endpoint + path))
                 .method(method, toJsonPublisher(body))
                 .header(CONTENT_TYPE_HEADER_NAME, CONTENT_TYPE_HEADER_VALUE)
