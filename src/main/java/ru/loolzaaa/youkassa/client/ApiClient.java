@@ -1,6 +1,7 @@
 package ru.loolzaaa.youkassa.client;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 
@@ -30,6 +31,24 @@ public class ApiClient {
     private final Supplier<String> authHeaderSupplier;
 
     public <T> T sendRequest(String method, String path, Map<String, String> headers, RequestValidated body, Class<T> responseClass) {
+        String response = execute(method, path, headers, body);
+        try {
+            return mapper.readValue(response, responseClass);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public <T> T sendRequest(String method, String path, Map<String, String> headers, RequestValidated body, TypeReference<T> typeReference) {
+        String response = execute(method, path, headers, body);
+        try {
+            return mapper.readValue(response, typeReference);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private String execute(String method, String path, Map<String, String> headers, RequestValidated body) {
         if (body != null) {
             body.validate();
         }
@@ -48,7 +67,7 @@ public class ApiClient {
             if (response.statusCode() != 200) {
                 handleRequestError(response.body());
             }
-            return mapper.readValue(response.body(), responseClass);
+            return response.body();
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }

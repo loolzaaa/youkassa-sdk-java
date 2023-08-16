@@ -1,9 +1,18 @@
 package ru.loolzaaa.youkassa.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import ru.loolzaaa.youkassa.pojo.Amount;
 
 import java.util.List;
 
+@Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Me {
     @JsonProperty("account_id")
     private String accountId;
@@ -22,12 +31,5 @@ public class Me {
     @JsonProperty("name")
     private String name;
     @JsonProperty("payout_balance")
-    private PayoutBalance payoutBalance;
-
-    static class PayoutBalance {
-        @JsonProperty("value")
-        private String value;
-        @JsonProperty("currency")
-        private String currency;
-    }
+    private Amount payoutBalance;
 }

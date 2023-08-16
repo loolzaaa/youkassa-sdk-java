@@ -3,6 +3,7 @@ package ru.loolzaaa.youkassa;
 import ru.loolzaaa.youkassa.client.ApiClient;
 import ru.loolzaaa.youkassa.client.ApiClientBuilder;
 import ru.loolzaaa.youkassa.model.Payment;
+import ru.loolzaaa.youkassa.pojo.CapturePayment;
 import ru.loolzaaa.youkassa.processors.PaymentProcessor;
 
 public class Runner {
@@ -12,15 +13,22 @@ public class Runner {
                 .build();
         PaymentProcessor paymentProcessor = new PaymentProcessor(client);
 
-        Payment paymentById = paymentProcessor.findById("123");
-        System.out.println(paymentById);
-
 //        Payment paymentParams = Payment.builder()
-//                .amount(Payment.Amount.builder().value("100.00").currency("RUB").build())
+//                .amount(Amount.builder().value("100.00").currency("RUB").build())
 //                .description("Test description")
-//                .confirmation(Payment.Confirmation.builder().type(Payment.Confirmation.Type.REDIRECT).returnUrl("http://example.com").build())
+//                .confirmation(Confirmation.builder()
+//                        .type(Confirmation.Type.REDIRECT)
+//                        .returnUrl("http://example.com")
+//                        .build())
 //                .build();
 //        Payment payment = paymentProcessor.create(paymentParams, null);
-//        System.out.println(payment);
+//        System.out.println(payment.getConfirmation().getConfirmationUrl());
+
+        Payment byId = paymentProcessor.findById("2c6e5c24-000f-5000-9000-162da2ef96c3");
+        System.out.println(byId.getStatus());
+
+        CapturePayment capturePayment = CapturePayment.builder().build();
+        Payment captured = paymentProcessor.capture("2c6e5c24-000f-5000-9000-162da2ef96c3", capturePayment, null);
+        System.out.println(captured.getStatus());
     }
 }
