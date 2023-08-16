@@ -36,5 +36,5 @@ public class Deal implements RequestBody {
     @JsonProperty("metadata")
     private Map<String, String> metadata;
     @JsonProperty("test")
-    private boolean test;
+    private Boolean test;
 }

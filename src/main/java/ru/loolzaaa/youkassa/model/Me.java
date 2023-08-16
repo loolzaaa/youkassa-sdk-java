@@ -19,9 +19,9 @@ public class Me {
     @JsonProperty("status")
     private String status;
     @JsonProperty("test")
-    private boolean test;
+    private Boolean test;
     @JsonProperty("fiscalization_enabled")
-    private boolean fiscalizationEnabled;
+    private Boolean fiscalizationEnabled;
     @JsonProperty("payment_methods")
     private List<String> paymentMethods;
     @JsonProperty("itn")

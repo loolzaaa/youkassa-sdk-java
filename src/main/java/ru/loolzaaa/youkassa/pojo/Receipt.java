@@ -22,7 +22,7 @@ public class Receipt {
     @JsonProperty("email")
     private String email;
     @JsonProperty("tax_system_code")
-    private int taxSystemCode;
+    private Integer taxSystemCode;
     @JsonProperty("receipt_industry_details")
     private List<ReceiptIndustryDetail> receiptIndustryDetails;
     @JsonProperty("receipt_operational_details")

@@ -51,7 +51,7 @@ public class Payout implements RequestBody {
     @JsonProperty("metadata")
     private Map<String, String> metadata;
     @JsonProperty("test")
-    private boolean test;
+    private Boolean test;
 
     @Getter
     @Builder
@@ -112,7 +112,7 @@ public class Payout implements RequestBody {
         @JsonProperty("phone")
         private String phone;
         @JsonProperty("recipient_checked")
-        private boolean recipientChecked;
+        private Boolean recipientChecked;
         @JsonProperty("account_number")
         private String accountNumber;
         @JsonProperty("card")

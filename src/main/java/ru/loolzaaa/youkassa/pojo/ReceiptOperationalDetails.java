@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ReceiptOperationalDetails {
     @JsonProperty("operation_id")
-    private int operationId;
+    private Integer operationId;
     @JsonProperty("value")
     private String value;
     @JsonProperty("created_at")

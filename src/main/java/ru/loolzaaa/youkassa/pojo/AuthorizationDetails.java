@@ -26,6 +26,6 @@ public class AuthorizationDetails {
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class ThreeDSecure {
         @JsonProperty("applied")
-        private boolean applied;
+        private Boolean applied;
     }
 }

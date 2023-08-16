@@ -41,7 +41,7 @@ public class Receipt implements RequestBody {
     @JsonProperty("items")
     private List<Item> items;
     @JsonProperty("send")
-    private boolean send;
+    private Boolean send;
     @JsonProperty("additional_user_props")
     private AdditionalUserProps additionalUserProps;
     @JsonProperty("settlements")
@@ -49,7 +49,7 @@ public class Receipt implements RequestBody {
     @JsonProperty("on_behalf_of")
     private String onBehalfOf;
     @JsonProperty("tax_system_code")
-    private int taxSystemCode;
+    private Integer taxSystemCode;
     @JsonProperty("receipt_industry_details")
     private List<ReceiptIndustryDetail> receiptIndustryDetails;
     @JsonProperty("receipt_operational_details")

@@ -20,7 +20,7 @@ public class Confirmation {
     @JsonProperty("confirmation_data")
     private String confirmationData;
     @JsonProperty("enforce")
-    private boolean enforce;
+    private Boolean enforce;
     @JsonProperty("locale")
     private String locale;
     @JsonProperty("return_url")

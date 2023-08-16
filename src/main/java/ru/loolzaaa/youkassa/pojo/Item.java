@@ -19,7 +19,7 @@ public class Item {
     @JsonProperty("amount")
     private Amount amount;
     @JsonProperty("vat_code")
-    private int vatCode;
+    private Integer vatCode;
     @JsonProperty("quantity")
     private String quantity;
     @JsonProperty("measure")
@@ -58,9 +58,9 @@ public class Item {
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class MarkQuantity {
         @JsonProperty("numerator")
-        private int numerator;
+        private Integer numerator;
         @JsonProperty("denominator")
-        private int denominator;
+        private Integer denominator;
     }
 
     @Getter

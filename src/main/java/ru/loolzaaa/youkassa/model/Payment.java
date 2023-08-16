@@ -41,9 +41,9 @@ public class Payment implements RequestValidated {
     @JsonProperty("payment_token")
     private String paymentToken;
     @JsonProperty("save_payment_method")
-    private boolean savePaymentMethod;
+    private Boolean savePaymentMethod;
     @JsonProperty("capture")
-    private boolean capture;
+    private Boolean capture;
     @JsonProperty("captured_at")
     private String capturedAt;
     @JsonProperty("created_at")
@@ -53,13 +53,13 @@ public class Payment implements RequestValidated {
     @JsonProperty("confirmation")
     private Confirmation confirmation;
     @JsonProperty("test")
-    private boolean test;
+    private Boolean test;
     @JsonProperty("refunded_amount")
     private Amount refundedAmount;
     @JsonProperty("paid")
-    private boolean paid;
+    private Boolean paid;
     @JsonProperty("refundable")
-    private boolean refundable;
+    private Boolean refundable;
     @JsonProperty("receipt_registration")
     private String receiptRegistration;
     @JsonProperty("client_ip")
@@ -109,7 +109,7 @@ public class Payment implements RequestValidated {
         @JsonProperty("id")
         private String id;
         @JsonProperty("saved")
-        private boolean saved;
+        private Boolean saved;
         @JsonProperty("title")
         private String title;
         @JsonProperty("discount_amount")
