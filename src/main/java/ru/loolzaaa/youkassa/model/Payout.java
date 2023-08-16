@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import ru.loolzaaa.youkassa.client.RequestValidated;
 import ru.loolzaaa.youkassa.pojo.Amount;
 import ru.loolzaaa.youkassa.pojo.CancellationDetails;
 
@@ -16,7 +17,7 @@ import java.util.Map;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Payout {
+public class Payout implements RequestValidated {
     @JsonProperty("id")
     private String id;
     @JsonProperty("amount")
@@ -25,6 +26,12 @@ public class Payout {
     private String status;
     @JsonProperty("payout_destination")
     private JsonNode payoutDestination;
+    @JsonProperty("payout_destination_data")
+    private JsonNode payoutDestinationData;
+    @JsonProperty("payout_token")
+    private String payoutToken;
+    @JsonProperty("payment_method_id")
+    private String paymentMethodId;
     @JsonProperty("description")
     private String description;
     @JsonProperty("created_at")
@@ -35,6 +42,10 @@ public class Payout {
     private SelfEmployed selfEmployed;
     @JsonProperty("receipt")
     private Receipt receipt;
+    @JsonProperty("receipt_data")
+    private Receipt receiptData;
+    @JsonProperty("personal_data")
+    private PersonalData personalData;
     @JsonProperty("cancellation_details")
     private CancellationDetails cancellationDetails;
     @JsonProperty("metadata")
@@ -67,6 +78,16 @@ public class Payout {
     @AllArgsConstructor
     @NoArgsConstructor
     @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class PersonalData {
+        @JsonProperty("id")
+        private String id;
+    }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Receipt {
         @JsonProperty("service_name")
         private String serviceName;
@@ -76,5 +97,10 @@ public class Payout {
         private String url;
         @JsonProperty("amount")
         private Amount amount;
+    }
+
+    @Override
+    public void validate() {
+        //
     }
 }
