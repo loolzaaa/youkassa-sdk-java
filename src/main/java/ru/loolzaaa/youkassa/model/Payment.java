@@ -257,6 +257,23 @@ public class Payment implements RequestBody {
     }
 
     public static void captureValidation(Payment payment) {
-        //
+        if (payment.getAmount() != null) {
+            payment.getAmount().validate();
+        }
+        if (payment.getReceipt() != null) {
+            payment.getReceipt().validate();
+        }
+        if (payment.getAirline() != null) {
+            payment.getAirline().validate();
+        }
+        if (payment.getTransfers() != null) {
+            for (Transfer transfer : payment.getTransfers()) {
+                transfer.validate();
+            }
+        }
+        if (payment.getDeal() != null) {
+            // This validation also checks deal id. Is this problem?
+            payment.getDeal().validate();
+        }
     }
 }

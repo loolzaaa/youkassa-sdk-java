@@ -18,7 +18,6 @@ public class Item implements Validated {
 
     private static final int MAX_DESCRIPTION_LENGTH = 128;
     private static final String QUANTITY_PATTERN = "\\d+\\.?\\d{0,3}";
-    private static final String CUSTOMS_DECLARATION_NUMBER_PATTERN = "\\d{1,32}";
     private static final String EXCISE_PATTERN = "\\d+\\.\\d{2}";
 
     @JsonProperty("description")
@@ -167,8 +166,8 @@ public class Item implements Validated {
         if (markQuantity != null) {
             markQuantity.validate();
         }
-        if (customsDeclarationNumber != null && !customsDeclarationNumber.matches(CUSTOMS_DECLARATION_NUMBER_PATTERN)) {
-            throw new IllegalArgumentException("Incorrect customs declaration number. Correct pattern: " + CUSTOMS_DECLARATION_NUMBER_PATTERN);
+        if (customsDeclarationNumber != null && (customsDeclarationNumber.length() < 1 || customsDeclarationNumber.length() > 32)) {
+            throw new IllegalArgumentException("Incorrect customs declaration number. Min: 1. Max: 32");
         }
         if (excise != null && !excise.matches(EXCISE_PATTERN)) {
             throw new IllegalArgumentException("Incorrect excise. Correct pattern: " + EXCISE_PATTERN);
