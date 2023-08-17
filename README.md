@@ -19,7 +19,7 @@ ApiClient client = ApiClientBuilder.newBuilder()
         .configureBasicAuth("shop_id", "secret_key")
         .build();
 ```
-Или черезе OAuth:
+Или через OAuth:
 ```java
 ApiClient client = ApiClientBuilder.newBuilder()
         .configureOAuth("oauth_token")
