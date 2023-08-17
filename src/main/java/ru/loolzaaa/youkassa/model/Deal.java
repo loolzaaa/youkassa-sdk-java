@@ -19,6 +19,12 @@ import java.util.Map;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Deal implements RequestBody {
+
+    private static final int MAX_DESCRIPTION_LENGTH = 128;
+    private static final int MAX_METADATA_SIZE = 16;
+    private static final int MAX_METADATA_KEY_LENGTH = 32;
+    private static final int MAX_METADATA_VALUE_LENGTH = 512;
+
     @JsonProperty("id")
     private String id;
     @JsonProperty("type")
@@ -41,4 +47,29 @@ public class Deal implements RequestBody {
     private Map<String, String> metadata;
     @JsonProperty("test")
     private Boolean test;
+
+    public static void createValidation(Deal deal) {
+        if (deal.getType() == null) {
+            throw new IllegalArgumentException("Type must not be null");
+        }
+        if (deal.getFeeMoment() == null) {
+            throw new IllegalArgumentException("fee moment must not be null");
+        }
+        if (deal.getMetadata() != null) {
+            if (deal.getMetadata().size() > MAX_METADATA_SIZE) {
+                throw new IllegalArgumentException("Incorrect metadata size. Max size: " + MAX_METADATA_SIZE);
+            }
+            for (Map.Entry<String, String> pair : deal.getMetadata().entrySet()) {
+                if (pair.getKey().length() > MAX_METADATA_KEY_LENGTH) {
+                    throw new IllegalArgumentException("Too long metadata key. Max Length: " + MAX_METADATA_KEY_LENGTH);
+                }
+                if (pair.getValue().length() > MAX_METADATA_VALUE_LENGTH) {
+                    throw new IllegalArgumentException("Too long metadata value. Max Length: " + MAX_METADATA_VALUE_LENGTH);
+                }
+            }
+        }
+        if (deal.getDescription() != null && deal.getDescription().length() > MAX_DESCRIPTION_LENGTH) {
+            throw new IllegalArgumentException("Too long description. Max length: " + MAX_DESCRIPTION_LENGTH);
+        }
+    }
 }

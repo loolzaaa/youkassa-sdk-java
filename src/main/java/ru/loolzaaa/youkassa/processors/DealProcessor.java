@@ -32,6 +32,7 @@ public class DealProcessor {
         if (dealParams == null) {
             throw new IllegalArgumentException("dealParams must not be null");
         }
+        Deal.createValidation(dealParams);
         if (idempotencyKey == null) {
             idempotencyKey = UUID.randomUUID().toString();
         }
