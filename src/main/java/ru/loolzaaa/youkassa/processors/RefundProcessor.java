@@ -32,6 +32,7 @@ public class RefundProcessor {
         if (refundParams == null) {
             throw new IllegalArgumentException("refundParams must not be null");
         }
+        Refund.createValidation(refundParams);
         if (idempotencyKey == null) {
             idempotencyKey = UUID.randomUUID().toString();
         }

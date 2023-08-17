@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ru.loolzaaa.youkassa.client.RequestBody;
+import ru.loolzaaa.youkassa.client.Validated;
 import ru.loolzaaa.youkassa.pojo.Receipt;
 import ru.loolzaaa.youkassa.pojo.*;
 
@@ -20,6 +21,9 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Refund implements RequestBody {
+
+    private static final int MAX_DESCRIPTION_LENGTH = 250;
+
     @JsonProperty("id")
     private String id;
     @JsonProperty("payment_id")
@@ -49,10 +53,44 @@ public class Refund implements RequestBody {
     @NoArgsConstructor
     @JsonIgnoreProperties(ignoreUnknown = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public static class Deal {
+    public static class Deal implements Validated {
         @JsonProperty("id")
         private String id;
         @JsonProperty("refund_settlements")
         private List<Settlement> settlements;
+
+        @Override
+        public void validate() {
+            if (settlements == null) {
+                throw new IllegalArgumentException("Settlements must not be null");
+            }
+            for (Settlement settlement : settlements) {
+                settlement.validate();
+            }
+        }
+    }
+
+    public static void createValidation(Refund refund) {
+        if (refund.getPaymentId() == null) {
+            throw new IllegalArgumentException("Payment id must not be null");
+        }
+        if (refund.getAmount() == null) {
+            throw new IllegalArgumentException("Amount must not be null");
+        }
+        refund.getAmount().validate();
+        if (refund.getDescription() != null && refund.getDescription().length() > MAX_DESCRIPTION_LENGTH) {
+            throw new IllegalArgumentException("Too long description. Max length: " + MAX_DESCRIPTION_LENGTH);
+        }
+        if (refund.getReceipt() != null) {
+            refund.getReceipt().validate();
+        }
+        if (refund.getSources() != null) {
+            for (Source source : refund.getSources()) {
+                source.validate();
+            }
+        }
+        if (refund.getDeal() != null) {
+            refund.getDeal().validate();
+        }
     }
 }
