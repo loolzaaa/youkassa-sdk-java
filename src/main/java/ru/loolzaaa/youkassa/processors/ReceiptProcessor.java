@@ -32,6 +32,7 @@ public class ReceiptProcessor {
         if (receiptParams == null) {
             throw new IllegalArgumentException("receiptParams must not be null");
         }
+        Receipt.createValidation(receiptParams);
         if (idempotencyKey == null) {
             idempotencyKey = UUID.randomUUID().toString();
         }
