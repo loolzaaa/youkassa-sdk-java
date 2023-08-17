@@ -32,6 +32,7 @@ public class PaymentProcessor {
         if (paymentParams == null) {
             throw new IllegalArgumentException("paymentParams must not be null");
         }
+        Payment.createValidation(paymentParams);
         if (idempotencyKey == null) {
             idempotencyKey = UUID.randomUUID().toString();
         }
@@ -45,6 +46,7 @@ public class PaymentProcessor {
         if (paymentParams == null) {
             throw new IllegalArgumentException("paymentParams must not be null");
         }
+        Payment.captureValidation(paymentParams);
         if (idempotencyKey == null) {
             idempotencyKey = UUID.randomUUID().toString();
         }

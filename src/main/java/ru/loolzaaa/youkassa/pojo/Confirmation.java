@@ -5,12 +5,16 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import ru.loolzaaa.youkassa.client.Validated;
 
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Confirmation {
+public class Confirmation implements Validated {
+
+    private static final int MAX_RETURN_URL_LENGTH = 2048;
+
     @JsonProperty("type")
     private String type;
     @JsonProperty("confirmation_token")
@@ -32,5 +36,18 @@ public class Confirmation {
         public static final String MOBILE_APPLICATION = "mobile_application";
         public static final String QR_CODE = "qr";
         public static final String REDIRECT = "redirect";
+    }
+
+    @Override
+    public void validate() {
+        if (type == null) {
+            throw new IllegalArgumentException("Type must not be null");
+        }
+        if (type.equals(Type.MOBILE_APPLICATION) && returnUrl == null) {
+            throw new IllegalArgumentException("Return url must not be null if type " + Type.MOBILE_APPLICATION);
+        }
+        if (returnUrl != null && returnUrl.length() > MAX_RETURN_URL_LENGTH) {
+            throw new IllegalArgumentException("Too long return url. Max length: " + MAX_RETURN_URL_LENGTH);
+        }
     }
 }

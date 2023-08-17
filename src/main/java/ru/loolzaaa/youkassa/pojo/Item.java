@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import ru.loolzaaa.youkassa.client.Validated;
 
 import java.util.List;
 
@@ -13,7 +14,13 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Item {
+public class Item implements Validated {
+
+    private static final int MAX_DESCRIPTION_LENGTH = 128;
+    private static final String QUANTITY_PATTERN = "\\d+\\.?\\d{0,3}";
+    private static final String CUSTOMS_DECLARATION_NUMBER_PATTERN = "\\d{1,32}";
+    private static final String EXCISE_PATTERN = "\\d+\\.\\d{2}";
+
     @JsonProperty("description")
     private String description;
     @JsonProperty("amount")
@@ -56,11 +63,21 @@ public class Item {
     @AllArgsConstructor
     @NoArgsConstructor
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static class MarkQuantity {
+    public static class MarkQuantity implements Validated {
         @JsonProperty("numerator")
         private Integer numerator;
         @JsonProperty("denominator")
         private Integer denominator;
+
+        @Override
+        public void validate() {
+            if (numerator == null || denominator == null) {
+                throw new IllegalArgumentException("Numerator and denominator must no be null");
+            }
+            if (numerator < 1 || numerator >= denominator) {
+                throw new IllegalArgumentException("Incorrect numerator. Must be greater than 1 and less than denominator");
+            }
+        }
     }
 
     @Getter
@@ -121,5 +138,40 @@ public class Item {
         private String documentNumber;
         @JsonProperty("value")
         private String value;
+    }
+
+    @Override
+    public void validate() {
+        if (description == null) {
+            throw new IllegalArgumentException("Description must not be null");
+        }
+        if (description.length() > MAX_DESCRIPTION_LENGTH) {
+            throw new IllegalArgumentException("Too long description. Max length: " + MAX_DESCRIPTION_LENGTH);
+        }
+        if (amount == null) {
+            throw new IllegalArgumentException("Amount must not be null");
+        }
+        amount.validate();
+        if (vatCode == null) {
+            throw new IllegalArgumentException("Vat code must not be null");
+        }
+        if (vatCode < 1 || vatCode > 6) {
+            throw new IllegalArgumentException("Incorrect vat code. Min: 1. Max: 6");
+        }
+        if (quantity == null) {
+            throw new IllegalArgumentException("Quantity must no be null");
+        }
+        if (!quantity.matches(QUANTITY_PATTERN)) {
+            throw new IllegalArgumentException("Incorrect quantity. Correct pattern: " + QUANTITY_PATTERN);
+        }
+        if (markQuantity != null) {
+            markQuantity.validate();
+        }
+        if (customsDeclarationNumber != null && !customsDeclarationNumber.matches(CUSTOMS_DECLARATION_NUMBER_PATTERN)) {
+            throw new IllegalArgumentException("Incorrect customs declaration number. Correct pattern: " + CUSTOMS_DECLARATION_NUMBER_PATTERN);
+        }
+        if (excise != null && !excise.matches(EXCISE_PATTERN)) {
+            throw new IllegalArgumentException("Incorrect excise. Correct pattern: " + EXCISE_PATTERN);
+        }
     }
 }
