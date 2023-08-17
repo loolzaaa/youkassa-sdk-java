@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import ru.loolzaaa.youkassa.client.ApiClient;
 import ru.loolzaaa.youkassa.client.PaginatedResponse;
 import ru.loolzaaa.youkassa.model.Payment;
+import ru.loolzaaa.youkassa.pojo.list.PaymentList;
 
 import java.util.Map;
 import java.util.UUID;
@@ -24,8 +25,9 @@ public class PaymentProcessor {
         return client.sendRequest("GET", path, null, null, Payment.class);
     }
 
-    public PaginatedResponse<Payment> findAll() {
-        return client.sendRequest("GET", BASE_PATH, null, null, new TypeReference<>() {});
+    public PaginatedResponse<Payment> findAll(PaymentList paymentList) {
+        String path = BASE_PATH + paymentList.toQueryString();
+        return client.sendRequest("GET", path, null, null, new TypeReference<>() {});
     }
 
     public Payment create(Payment paymentParams, String idempotencyKey) {

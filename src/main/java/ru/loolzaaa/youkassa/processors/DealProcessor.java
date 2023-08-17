@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import ru.loolzaaa.youkassa.client.ApiClient;
 import ru.loolzaaa.youkassa.client.PaginatedResponse;
 import ru.loolzaaa.youkassa.model.Deal;
+import ru.loolzaaa.youkassa.pojo.list.DealList;
 
 import java.util.Map;
 import java.util.UUID;
@@ -24,8 +25,9 @@ public class DealProcessor {
         return client.sendRequest("GET", path, null, null, Deal.class);
     }
 
-    public PaginatedResponse<Deal> findAll() {
-        return client.sendRequest("GET", BASE_PATH, null, null, new TypeReference<>() {});
+    public PaginatedResponse<Deal> findAll(DealList dealList) {
+        String path = BASE_PATH + dealList.toQueryString();
+        return client.sendRequest("GET", path, null, null, new TypeReference<>() {});
     }
 
     public Deal create(Deal dealParams, String idempotencyKey) {

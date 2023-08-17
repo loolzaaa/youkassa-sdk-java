@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import ru.loolzaaa.youkassa.client.ApiClient;
 import ru.loolzaaa.youkassa.client.PaginatedResponse;
 import ru.loolzaaa.youkassa.model.Refund;
+import ru.loolzaaa.youkassa.pojo.list.RefundList;
 
 import java.util.Map;
 import java.util.UUID;
@@ -24,8 +25,9 @@ public class RefundProcessor {
         return client.sendRequest("GET", path, null, null, Refund.class);
     }
 
-    public PaginatedResponse<Refund> findAll() {
-        return client.sendRequest("GET", BASE_PATH, null, null, new TypeReference<>() {});
+    public PaginatedResponse<Refund> findAll(RefundList refundList) {
+        String path = BASE_PATH + refundList.toQueryString();
+        return client.sendRequest("GET", path, null, null, new TypeReference<>() {});
     }
 
     public Refund create(Refund refundParams, String idempotencyKey) {

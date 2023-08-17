@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import ru.loolzaaa.youkassa.client.ApiClient;
 import ru.loolzaaa.youkassa.client.PaginatedResponse;
 import ru.loolzaaa.youkassa.model.Receipt;
+import ru.loolzaaa.youkassa.pojo.list.ReceiptList;
 
 import java.util.Map;
 import java.util.UUID;
@@ -24,8 +25,9 @@ public class ReceiptProcessor {
         return client.sendRequest("GET", path, null, null, Receipt.class);
     }
 
-    public PaginatedResponse<Receipt> findAll() {
-        return client.sendRequest("GET", BASE_PATH, null, null, new TypeReference<>() {});
+    public PaginatedResponse<Receipt> findAll(ReceiptList receiptList) {
+        String path = BASE_PATH + receiptList.toQueryString();
+        return client.sendRequest("GET", path, null, null, new TypeReference<>() {});
     }
 
     public Receipt create(Receipt receiptParams, String idempotencyKey) {
