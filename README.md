@@ -1,9 +1,15 @@
 # YooKassa API Java Client Library (unofficial)
 **Неофициальный** клиент для работы с платежами по [API ЮKassa](https://yookassa.ru/developers/api) Подходит тем, у кого способ подключения к ЮKassa называется API.
 
-## Требования
-
 ## Установка
+Подключите зависимость для maven:
+```xml
+<dependency>
+    <groupId>ru.loolzaaa</groupId>
+    <artifactId>youkassa-sdk-java</artifactId>
+    <version>0.0.1</version>
+</dependency>
+```
 
 ## Начало работы
 Для начала работы необходимо создать экземпляр `ApiClient`.
