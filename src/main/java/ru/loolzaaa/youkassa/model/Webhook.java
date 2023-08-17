@@ -22,4 +22,10 @@ public class Webhook implements RequestBody {
     private String event;
     @JsonProperty("url")
     private String url;
+
+    public static void createValidation(Webhook webhook) {
+        if (webhook.getEvent() == null || webhook.getUrl() == null) {
+            throw new IllegalArgumentException("Event and url must not be null");
+        }
+    }
 }

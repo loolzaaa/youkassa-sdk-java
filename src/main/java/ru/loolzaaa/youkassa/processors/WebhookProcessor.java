@@ -24,6 +24,7 @@ public class WebhookProcessor {
         if (webhookParams == null) {
             throw new IllegalArgumentException("webhookParams must not be null");
         }
+        Webhook.createValidation(webhookParams);
         if (idempotencyKey == null) {
             idempotencyKey = UUID.randomUUID().toString();
         }
