@@ -26,6 +26,7 @@ public class PayoutProcessor {
         if (payoutParams == null) {
             throw new IllegalArgumentException("payoutParams must not be null");
         }
+        Payout.createValidation(payoutParams);
         if (idempotencyKey == null) {
             idempotencyKey = UUID.randomUUID().toString();
         }

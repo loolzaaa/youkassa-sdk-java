@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ru.loolzaaa.youkassa.client.RequestBody;
+import ru.loolzaaa.youkassa.client.Validated;
 import ru.loolzaaa.youkassa.pojo.Amount;
 import ru.loolzaaa.youkassa.pojo.CancellationDetails;
 import ru.loolzaaa.youkassa.pojo.Card;
@@ -21,6 +22,12 @@ import java.util.Map;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Payout implements RequestBody {
+
+    private static final int MAX_DESCRIPTION_LENGTH = 128;
+    private static final int MAX_METADATA_SIZE = 16;
+    private static final int MAX_METADATA_KEY_LENGTH = 32;
+    private static final int MAX_METADATA_VALUE_LENGTH = 512;
+
     @JsonProperty("id")
     private String id;
     @JsonProperty("amount")
@@ -62,9 +69,16 @@ public class Payout implements RequestBody {
     @NoArgsConstructor
     @JsonIgnoreProperties(ignoreUnknown = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public static class Deal {
+    public static class Deal implements Validated {
         @JsonProperty("id")
         private String id;
+
+        @Override
+        public void validate() {
+            if (id == null) {
+                throw new IllegalArgumentException("Id must not be null");
+            }
+        }
     }
 
     @Getter
@@ -73,9 +87,16 @@ public class Payout implements RequestBody {
     @NoArgsConstructor
     @JsonIgnoreProperties(ignoreUnknown = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public static class SelfEmployed {
+    public static class SelfEmployed implements Validated {
         @JsonProperty("id")
         private String id;
+
+        @Override
+        public void validate() {
+            if (id == null) {
+                throw new IllegalArgumentException("Id must not be null");
+            }
+        }
     }
 
     @Getter
@@ -84,9 +105,16 @@ public class Payout implements RequestBody {
     @NoArgsConstructor
     @JsonIgnoreProperties(ignoreUnknown = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public static class PersonalData {
+    public static class PersonalData implements Validated {
         @JsonProperty("id")
         private String id;
+
+        @Override
+        public void validate() {
+            if (id == null) {
+                throw new IllegalArgumentException("Id must not be null");
+            }
+        }
     }
 
     @Getter
@@ -95,7 +123,10 @@ public class Payout implements RequestBody {
     @NoArgsConstructor
     @JsonIgnoreProperties(ignoreUnknown = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public static class Receipt {
+    public static class Receipt implements Validated {
+
+        private static final int MAX_SERVICE_NAME_LENGTH = 50;
+
         @JsonProperty("service_name")
         private String serviceName;
         @JsonProperty("npd_receipt_id")
@@ -104,6 +135,19 @@ public class Payout implements RequestBody {
         private String url;
         @JsonProperty("amount")
         private Amount amount;
+
+        @Override
+        public void validate() {
+            if (serviceName == null) {
+                throw new IllegalArgumentException("Service name must not be null");
+            }
+            if (serviceName.length() > MAX_SERVICE_NAME_LENGTH) {
+                throw new IllegalArgumentException("Too long service name. Max length: " + MAX_SERVICE_NAME_LENGTH);
+            }
+            if (amount != null) {
+                amount.validate();
+            }
+        }
     }
 
     @Getter
@@ -112,7 +156,11 @@ public class Payout implements RequestBody {
     @NoArgsConstructor
     @JsonIgnoreProperties(ignoreUnknown = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public static class PayoutDestination {
+    public static class PayoutDestination implements Validated {
+
+        private static final int MAX_BANK_ID_LENGTH = 12;
+        private static final int MAX_PHONE_LENGTH = 15;
+
         @JsonProperty("type")
         private String type;
         @JsonProperty("bank_id")
@@ -126,10 +174,89 @@ public class Payout implements RequestBody {
         @JsonProperty("card")
         private Card card;
 
+        @Override
+        public void validate() {
+            if (type == null) {
+                throw new IllegalArgumentException("Type must nor be null");
+            }
+            if (type.equals(Type.BANK_CARD) && card == null) {
+                throw new IllegalArgumentException("Card must not be null if type " + Type.BANK_CARD);
+            }
+            if (card != null) {
+                // This also checks expiry date!
+                card.validate();
+            }
+            if (type.equals(Type.SBP) && (bankId == null || phone == null)) {
+                throw new IllegalArgumentException("Bank id and phone must not be null if type " + Type.SBP);
+            }
+            if (bankId != null && bankId.length() > MAX_BANK_ID_LENGTH) {
+                throw new IllegalArgumentException("Too long bank id. Max length: " + MAX_BANK_ID_LENGTH);
+            }
+            if (phone != null && phone.length() > MAX_PHONE_LENGTH) {
+                throw new IllegalArgumentException("Too long phone. Max length: " + MAX_PHONE_LENGTH);
+            }
+            if (type.equals(Type.YOO_MONEY) && accountNumber == null) {
+                throw new IllegalArgumentException("Account number must not be null if type " + Type.YOO_MONEY);
+            }
+            if (accountNumber != null && (accountNumber.length() < 11 || accountNumber.length() > 33)) {
+                throw new IllegalArgumentException("Incorrect account number. Min: 11. Max: 33");
+            }
+        }
+
         public static class Type {
             public static final String BANK_CARD = "bank_card";
             public static final String SBP = "spb";
             public static final String YOO_MONEY = "yoo_money";
+        }
+    }
+
+    public static void createValidation(Payout payout) {
+        if (payout.getAmount() == null) {
+            throw new IllegalArgumentException("Amount must not be null");
+        }
+        payout.getAmount().validate();
+        if (payout.getPayoutDestinationData() == null && payout.getPayoutToken() == null && payout.getPaymentMethodId() == null) {
+            throw new IllegalArgumentException("One of payout destination data, payout token and payment method id must not be null");
+        }
+        if (payout.getPayoutDestinationData() != null && (payout.getPayoutToken() != null || payout.getPaymentMethodId() != null)) {
+            throw new IllegalArgumentException("Only one of payout destination data, payout token and payment method id must be specified");
+        }
+        if (payout.getPayoutToken() != null && (payout.getPayoutDestinationData() != null || payout.getPaymentMethodId() != null)) {
+            throw new IllegalArgumentException("Only one of payout destination data, payout token and payment method id must be specified");
+        }
+        if (payout.getPaymentMethodId() != null && (payout.getPayoutDestinationData() != null || payout.getPayoutToken() != null)) {
+            throw new IllegalArgumentException("Only one of payout destination data, payout token and payment method id must be specified");
+        }
+        if (payout.getPayoutDestinationData() != null) {
+            payout.getPayoutDestinationData().validate();
+        }
+        if (payout.getDescription() != null && payout.getDescription().length() > MAX_DESCRIPTION_LENGTH) {
+            throw new IllegalArgumentException("Too long description. Max length: " + MAX_DESCRIPTION_LENGTH);
+        }
+        if (payout.getDeal() != null) {
+            payout.getDeal().validate();
+        }
+        if (payout.getSelfEmployed() != null) {
+            payout.getSelfEmployed().validate();
+        }
+        if (payout.getReceiptData() != null) {
+            payout.getReceiptData().validate();
+        }
+        if (payout.getPersonalData() != null) {
+            payout.getPersonalData().validate();
+        }
+        if (payout.getMetadata() != null) {
+            if (payout.getMetadata().size() > MAX_METADATA_SIZE) {
+                throw new IllegalArgumentException("Incorrect metadata size. Max size: " + MAX_METADATA_SIZE);
+            }
+            for (Map.Entry<String, String> pair : payout.getMetadata().entrySet()) {
+                if (pair.getKey().length() > MAX_METADATA_KEY_LENGTH) {
+                    throw new IllegalArgumentException("Too long metadata key. Max Length: " + MAX_METADATA_KEY_LENGTH);
+                }
+                if (pair.getValue().length() > MAX_METADATA_VALUE_LENGTH) {
+                    throw new IllegalArgumentException("Too long metadata value. Max Length: " + MAX_METADATA_VALUE_LENGTH);
+                }
+            }
         }
     }
 }
