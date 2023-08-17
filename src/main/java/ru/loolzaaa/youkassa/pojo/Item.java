@@ -1,6 +1,7 @@
 package ru.loolzaaa.youkassa.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,6 +15,8 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Item implements Validated {
 
     private static final int MAX_DESCRIPTION_LENGTH = 128;
@@ -62,6 +65,7 @@ public class Item implements Validated {
     @AllArgsConstructor
     @NoArgsConstructor
     @JsonIgnoreProperties(ignoreUnknown = true)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class MarkQuantity implements Validated {
         @JsonProperty("numerator")
         private Integer numerator;
@@ -84,6 +88,7 @@ public class Item implements Validated {
     @AllArgsConstructor
     @NoArgsConstructor
     @JsonIgnoreProperties(ignoreUnknown = true)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class Supplier {
         @JsonProperty("name")
         private String name;
@@ -98,6 +103,7 @@ public class Item implements Validated {
     @AllArgsConstructor
     @NoArgsConstructor
     @JsonIgnoreProperties(ignoreUnknown = true)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class MarkCodeInfo {
         @JsonProperty("mark_code_raw")
         private String markCodeRaw;
@@ -128,6 +134,7 @@ public class Item implements Validated {
     @AllArgsConstructor
     @NoArgsConstructor
     @JsonIgnoreProperties(ignoreUnknown = true)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class PaymentSubjectIndustryDetail {
         @JsonProperty("federal_id")
         private String federalId;

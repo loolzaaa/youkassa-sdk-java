@@ -1,5 +1,7 @@
 package ru.loolzaaa.youkassa.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,6 +13,8 @@ import ru.loolzaaa.youkassa.client.Validated;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ReceiptIndustryDetail implements Validated {
 
     private static final String FEDERAL_ID_PATTERN = "(^00[1-9]$)|(^0[1-6][0-9]$)|(^07[0-3]$)";

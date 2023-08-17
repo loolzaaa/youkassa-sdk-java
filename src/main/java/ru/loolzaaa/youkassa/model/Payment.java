@@ -3,7 +3,10 @@ package ru.loolzaaa.youkassa.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import ru.loolzaaa.youkassa.client.RequestBody;
 import ru.loolzaaa.youkassa.client.Validated;
 import ru.loolzaaa.youkassa.pojo.Receipt;
@@ -13,7 +16,9 @@ import java.util.List;
 import java.util.Map;
 
 @Getter
-@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Payment implements RequestBody {
@@ -92,6 +97,7 @@ public class Payment implements RequestBody {
     @AllArgsConstructor
     @NoArgsConstructor
     @JsonIgnoreProperties(ignoreUnknown = true)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class Deal implements Validated {
 
         @JsonProperty("id")
@@ -121,6 +127,7 @@ public class Payment implements RequestBody {
     @AllArgsConstructor
     @NoArgsConstructor
     @JsonIgnoreProperties(ignoreUnknown = true)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class FraudData implements Validated {
 
         private static final String PHONE_PATTERN = "\\d{4,15}";
@@ -136,6 +143,12 @@ public class Payment implements RequestBody {
         }
     }
 
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class PaymentMethod implements Validated {
         @JsonProperty("type")
         private String type;
