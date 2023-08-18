@@ -54,6 +54,8 @@
         <jackson.version>2.15.2</jackson.version>
         <lombok.version>1.18.28</lombok.version>
         <junit.version>5.10.0</junit.version>
+        <wiremock.version>2.35.0</wiremock.version>
+        <assertj.version>3.24.2</assertj.version>
     </properties>
 
     <dependencies>
@@ -79,10 +81,23 @@
             <version>${lombok.version}</version>
             <scope>provided</scope>
         </dependency>
+
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.tomakehurst</groupId>
+            <artifactId>wiremock-jre8</artifactId>
+            <version>${wiremock.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${assertj.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
