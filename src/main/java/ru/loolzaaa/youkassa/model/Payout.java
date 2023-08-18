@@ -15,6 +15,22 @@ import ru.loolzaaa.youkassa.pojo.Card;
 
 import java.util.Map;
 
+/**
+ * This class represents Payout object.
+ * <p>
+ * Contains all information about the payout
+ * that is relevant at the current time.
+ * <p>
+ * It is generated when creating a payout
+ * and comes in response to any request
+ * related to payouts.
+ * <p>
+ * The set of returned parameters depends on
+ * the status of the object (the value of
+ * the status parameter) and what parameters
+ * you passed in the request to create a payout.
+ */
+
 @Getter
 @Builder
 @AllArgsConstructor

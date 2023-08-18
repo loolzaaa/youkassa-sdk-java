@@ -13,6 +13,15 @@ import ru.loolzaaa.youkassa.pojo.*;
 
 import java.util.List;
 
+/**
+ * This class represents Receipt object.
+ * <p>
+ * Contains up-to-date information about
+ * the receipt created for payment or refund.
+ *
+ * @apiNote For those who use the YooKassa solution for 54-FZ
+ */
+
 @Getter
 @Builder
 @AllArgsConstructor

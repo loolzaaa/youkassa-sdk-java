@@ -12,6 +12,19 @@ import ru.loolzaaa.youkassa.pojo.Amount;
 
 import java.util.Map;
 
+/**
+ * This class represents Deal object.
+ * <p>
+ * Contains all information about the deal
+ * that is relevant at the current time.
+ * <p>
+ * It is generated when a deal is created
+ * and comes in response to any request
+ * related to deals.
+ *
+ * @apiNote Only for those using Safe Deal.
+ */
+
 @Getter
 @Builder
 @AllArgsConstructor

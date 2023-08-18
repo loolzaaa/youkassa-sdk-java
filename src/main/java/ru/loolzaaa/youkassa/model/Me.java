@@ -11,6 +11,25 @@ import ru.loolzaaa.youkassa.pojo.Amount;
 
 import java.util.List;
 
+/**
+ * This class represents the store or gateway
+ * settings object (Me).
+ * <p>
+ * Contains up-to-date information about
+ * the settings of the requested store
+ * or gateway.
+ * <p>
+ * Returned in response to a request
+ * for configuration information.
+ * <p>
+ * The set of returned parameters depends on
+ * whose settings are requested - a merchant
+ * for accepting payments or a gateway for payments.
+ *
+ * @apiNote Only for those who use Split Payments,
+ * Partner Program or Payouts.
+ */
+
 @Getter
 @Builder
 @AllArgsConstructor

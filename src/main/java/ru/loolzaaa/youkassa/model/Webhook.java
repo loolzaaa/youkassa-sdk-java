@@ -9,6 +9,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ru.loolzaaa.youkassa.client.RequestBody;
 
+/**
+ * This class represents Webhook object.
+ *
+ * Contains information about subscribing
+ * to a single event.
+ *
+ * @apiNote Authentication by OAuth token only.
+ * Available through the Partner API
+ */
+
 @Getter
 @Builder
 @AllArgsConstructor
