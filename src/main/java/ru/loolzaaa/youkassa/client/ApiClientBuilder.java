@@ -4,7 +4,26 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.function.Supplier;
 
+/**
+ * This class implement builder pattern for {@link ApiClient}.
+ * <p>
+ * Compared with constructor creation of {@link ApiClient},
+ * this option additionally provides some sanity checks.
+ * <p>
+ * Usage:
+ * <pre>
+ * {@code
+ * ApiClient client = ApiClientBuilder.newBuilder()
+ *     .configureBasicAuth("shop_id", "secret_key")
+ *     .build();
+ * }
+ * </pre>
+ *
+ * @see ApiClient
+ */
+
 public class ApiClientBuilder {
+
     private String apiUrl = "https://api.yookassa.ru/v3";
     private String accountId;
     private String secretKey;
@@ -13,11 +32,29 @@ public class ApiClientBuilder {
     private ApiClientBuilder() {
     }
 
+    /**
+     * Sets API url endpoint for client.
+     *
+     * @param apiUrl api endpoint url
+     * @return builder itself
+     */
+
     public ApiClientBuilder apiUrl(String apiUrl) {
         assert apiUrl != null : "apiUrl must not be null";
         this.apiUrl = apiUrl;
         return this;
     }
+
+    /**
+     * Authentication configuration via Basic auth method.
+     * <p>
+     * Only one method (Basic/OAuth) of authentication
+     * can be configured.
+     *
+     * @param accountId id of yookassa shop/account
+     * @param secretKey secret key of yookassa shop/account
+     * @return builder itself
+     */
 
     public ApiClientBuilder configureBasicAuth(String accountId, String secretKey) {
         assert accountId != null : "accountId must not be null";
@@ -30,6 +67,16 @@ public class ApiClientBuilder {
         return this;
     }
 
+    /**
+     * Authentication configuration via OAuth method.
+     * <p>
+     * Only one method (Basic/OAuth) of authentication
+     * can be configured.
+     *
+     * @param authToken OAuth client token
+     * @return builder itself
+     */
+
     public ApiClientBuilder configureOAuth(String authToken) {
         assert authToken != null : "authToken must not be null";
         if (this.accountId != null || this.secretKey != null) {
@@ -38,6 +85,15 @@ public class ApiClientBuilder {
         this.authToken = authToken;
         return this;
     }
+
+    /**
+     * Created {@link ApiClient} instance.
+     * <p>
+     * Construct authentication header value supplier
+     * based on configured authentication method.
+     *
+     * @return instance of {@link ApiClient}
+     */
 
     public ApiClient build() {
         if (!isAuthConfigured()) {
@@ -55,6 +111,12 @@ public class ApiClientBuilder {
         };
         return new ApiClient(this.apiUrl, authHeaderSupplier);
     }
+
+    /**
+     * Creates new builder for {@link ApiClient}.
+     *
+     * @return new builder instance
+     */
 
     public static ApiClientBuilder newBuilder() {
         return new ApiClientBuilder();
