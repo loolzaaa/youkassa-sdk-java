@@ -54,6 +54,7 @@ public class ApiClientBuilder {
      * @param accountId id of yookassa shop/account
      * @param secretKey secret key of yookassa shop/account
      * @return builder itself
+     * @throws IllegalArgumentException if OAuth token not null
      */
 
     public ApiClientBuilder configureBasicAuth(String accountId, String secretKey) {
@@ -75,6 +76,7 @@ public class ApiClientBuilder {
      *
      * @param authToken OAuth client token
      * @return builder itself
+     * @throws IllegalArgumentException if accountId or secretKey not null
      */
 
     public ApiClientBuilder configureOAuth(String authToken) {
@@ -93,6 +95,7 @@ public class ApiClientBuilder {
      * based on configured authentication method.
      *
      * @return instance of {@link ApiClient}
+     * @throws IllegalArgumentException if authentication not configured
      */
 
     public ApiClient build() {
