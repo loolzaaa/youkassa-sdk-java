@@ -13,7 +13,18 @@ import java.util.UUID;
 /**
  * Processor for {@link Deal} entity.
  * <p>
+ * A Safe Deal is a YooKassa solution that allows
+ * you to accept payment from one participant
+ * in a transaction and transfer it to another
+ * participant at the time the terms
+ * of the transaction are fulfilled.
+ * <p>
+ * Using the API, you can create a deal
+ * and get up-to-date information about it.
+ * <p>
  * Use {@link ApiClient} for API server communication.
+ *
+ * @apiNote Only for those using Safe Deal.
  */
 
 @RequiredArgsConstructor

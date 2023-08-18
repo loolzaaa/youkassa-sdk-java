@@ -13,6 +13,10 @@ import java.util.UUID;
 /**
  * Processor for {@link Payment} entity.
  * <p>
+ * The API allows you to create, confirm,
+ * cancel payments, as well as receive
+ * information about them.
+ * <p>
  * Use {@link ApiClient} for API server communication.
  */
 

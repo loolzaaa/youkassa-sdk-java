@@ -13,6 +13,14 @@ import java.util.UUID;
 /**
  * Processor for {@link Refund} entity.
  * <p>
+ * Using the API, you can return payments - in full
+ * or in part. The refund procedure depends on
+ * the payment method (payment_method) of the original payment.
+ * When paying with a bank card, the money is returned
+ * to the card that was used to make the payment.
+ * <p>
+ * Some payment methods (for example, cash) do not support returns.
+ * <p>
  * Use {@link ApiClient} for API server communication.
  */
 

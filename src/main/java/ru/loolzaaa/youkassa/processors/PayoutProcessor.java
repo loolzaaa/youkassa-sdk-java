@@ -10,6 +10,21 @@ import java.util.UUID;
 /**
  * Processor for {@link Payout} entity.
  * <p>
+ * A payout is the amount of money you transfer
+ * to an individual or self-employed person.
+ * Using the API, you can create a payout
+ * and get up-to-date information about it.
+ * <p>
+ * Payments are used in the following YuKassa payment solutions:
+ * <ul>
+ *     <li>Payouts - you as a company transfer money
+ *     to individuals and the self-employed
+ *     (for example, pay out cashback to users).</li>
+ *     <li>Safe Deal - your platform transfers payment
+ *     from one individual to another as part
+ *     of the created transaction.</li>
+ * </ul>
+ * <p>
  * Use {@link ApiClient} for API server communication.
  */
 

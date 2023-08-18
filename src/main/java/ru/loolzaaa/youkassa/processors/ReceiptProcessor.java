@@ -13,7 +13,13 @@ import java.util.UUID;
 /**
  * Processor for {@link Receipt} entity.
  * <p>
+ * Using the API, you can receive information
+ * about receipts for which you sent data
+ * through YooKassa.
+ * <p>
  * Use {@link ApiClient} for API server communication.
+ *
+ * @apiNote For those who use the YooKassa solution for 54-FZ
  */
 
 @RequiredArgsConstructor

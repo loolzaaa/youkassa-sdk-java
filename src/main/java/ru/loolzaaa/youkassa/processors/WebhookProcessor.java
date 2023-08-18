@@ -12,7 +12,21 @@ import java.util.UUID;
 /**
  * Processor for {@link Webhook} entity.
  * <p>
+ * Webhook is a mechanism for automatically
+ * notifying your system about events
+ * that happen to created objects.
+ * For example, YooKassa can tell you
+ * when a payment object created in your application
+ * enters the {@code waiting_for_capture} status.
+ * <p>
+ * Using the API, you can set up a webhook
+ * (create, delete, view the list of created ones)
+ * for the passed OAuth token.
+ * <p>
  * Use {@link ApiClient} for API server communication.
+ *
+ * @apiNote Authentication by OAuth token only.
+ * Available through the Partner API
  */
 
 @RequiredArgsConstructor
