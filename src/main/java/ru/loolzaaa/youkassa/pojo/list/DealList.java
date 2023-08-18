@@ -1,5 +1,6 @@
 package ru.loolzaaa.youkassa.pojo.list;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import ru.loolzaaa.youkassa.client.PaginatedRequest;
@@ -22,6 +23,7 @@ public class DealList extends PaginatedRequest {
     private String status;
     private String fullTextSearch;
 
+    @Builder
     public DealList(Integer limit, String cursor, String createdAtGte, String createdAtGt, String createdAtLte,
                     String createdAtLt, String expiresAtGte, String expiresAtGt, String expiresAtLte,
                     String expiresAtLt, String status, String fullTextSearch) {
