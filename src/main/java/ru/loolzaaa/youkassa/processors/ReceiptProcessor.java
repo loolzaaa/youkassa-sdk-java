@@ -10,12 +10,28 @@ import ru.loolzaaa.youkassa.pojo.list.ReceiptList;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * Processor for {@link Receipt} entity.
+ * <p>
+ * Use {@link ApiClient} for API server communication.
+ */
+
 @RequiredArgsConstructor
 public class ReceiptProcessor {
 
     private static final String BASE_PATH = "/receipts";
 
     private final ApiClient client;
+
+    /**
+     * Receive information about some {@link Receipt}
+     * by its identifier.
+     *
+     * @param receiptId receipt identifier
+     * @return receipt entity with actual status
+     * @throws IllegalArgumentException if receipt id is null
+     *                                  or empty
+     */
 
     public Receipt findById(String receiptId) {
         if (receiptId == null || receiptId.isEmpty()) {
@@ -25,10 +41,33 @@ public class ReceiptProcessor {
         return client.sendRequest("GET", path, null, null, Receipt.class);
     }
 
+    /**
+     * Receive information about all receipts
+     * with some filter conditions.
+     *
+     * @param receiptList collection with filter conditions
+     * @return listed payout entities
+     * @see PaginatedResponse
+     */
+
     public PaginatedResponse<Receipt> findAll(ReceiptList receiptList) {
         String path = BASE_PATH + receiptList.toQueryString();
-        return client.sendRequest("GET", path, null, null, new TypeReference<>() {});
+        return client.sendRequest("GET", path, null, null, new TypeReference<>() {
+        });
     }
+
+    /**
+     * Creates new {@link Receipt} entity
+     * with certain parameters.
+     * <p>
+     * Generate random idempotency key
+     * if corresponding argument is null.
+     *
+     * @param receiptParams  parameters for new receipt
+     * @param idempotencyKey idempotency key
+     * @return new receipt entity with actual status
+     * @throws IllegalArgumentException if receipt parameters is null
+     */
 
     public Receipt create(Receipt receiptParams, String idempotencyKey) {
         if (receiptParams == null) {

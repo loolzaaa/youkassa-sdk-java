@@ -10,12 +10,28 @@ import ru.loolzaaa.youkassa.pojo.list.DealList;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * Processor for {@link Deal} entity.
+ * <p>
+ * Use {@link ApiClient} for API server communication.
+ */
+
 @RequiredArgsConstructor
 public class DealProcessor {
 
     private static final String BASE_PATH = "/deals";
 
     private final ApiClient client;
+
+    /**
+     * Receive information about some {@link Deal}
+     * by its identifier.
+     *
+     * @param dealId deal identifier
+     * @return deal entity with actual status
+     * @throws IllegalArgumentException if deal id is null
+     *                                  or empty
+     */
 
     public Deal findById(String dealId) {
         if (dealId == null || dealId.isEmpty()) {
@@ -25,10 +41,33 @@ public class DealProcessor {
         return client.sendRequest("GET", path, null, null, Deal.class);
     }
 
+    /**
+     * Receive information about all deals
+     * with some filter conditions.
+     *
+     * @param dealList collection with filter conditions
+     * @return listed deal entities
+     * @see PaginatedResponse
+     */
+
     public PaginatedResponse<Deal> findAll(DealList dealList) {
         String path = BASE_PATH + dealList.toQueryString();
-        return client.sendRequest("GET", path, null, null, new TypeReference<>() {});
+        return client.sendRequest("GET", path, null, null, new TypeReference<>() {
+        });
     }
+
+    /**
+     * Creates new {@link Deal} entity
+     * with certain parameters.
+     * <p>
+     * Generate random idempotency key
+     * if corresponding argument is null.
+     *
+     * @param dealParams     parameters for new deal
+     * @param idempotencyKey idempotency key
+     * @return new deal entity with actual status
+     * @throws IllegalArgumentException if deal parameters is null
+     */
 
     public Deal create(Deal dealParams, String idempotencyKey) {
         if (dealParams == null) {
