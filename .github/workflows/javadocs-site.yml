@@ -1,6 +1,6 @@
 name: Deploy Javadocs to Pages
 on:
-  #push:
+  push:
     #branches: ["master"]
   workflow_dispatch:
 permissions:
