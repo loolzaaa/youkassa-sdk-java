@@ -9,6 +9,26 @@ import ru.loolzaaa.youkassa.model.Webhook;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * Processor for {@link Webhook} entity.
+ * <p>
+ * Webhook is a mechanism for automatically
+ * notifying your system about events
+ * that happen to created objects.
+ * For example, YooKassa can tell you
+ * when a payment object created in your application
+ * enters the {@code waiting_for_capture} status.
+ * <p>
+ * Using the API, you can set up a webhook
+ * (create, delete, view the list of created ones)
+ * for the passed OAuth token.
+ * <p>
+ * Use {@link ApiClient} for API server communication.
+ *
+ * @apiNote Authentication by OAuth token only.
+ * Available through the Partner API
+ */
+
 @RequiredArgsConstructor
 public class WebhookProcessor {
 
@@ -16,9 +36,36 @@ public class WebhookProcessor {
 
     private final ApiClient client;
 
+    /**
+     * Receive information about all existing webhooks.
+     * <p>
+     * Can be used only if OAuth authentication
+     * method configured.
+     *
+     * @return listed webhook entities
+     * @see PaginatedResponse
+     */
+
     public PaginatedResponse<Webhook> findAll() {
-        return client.sendRequest("GET", BASE_PATH, null, null, new TypeReference<>() {});
+        return client.sendRequest("GET", BASE_PATH, null, null, new TypeReference<>() {
+        });
     }
+
+    /**
+     * Creates new {@link Webhook} entity
+     * with certain parameters.
+     * <p>
+     * Generate random idempotency key
+     * if corresponding argument is null.
+     * <p>
+     * Can be used only if OAuth authentication
+     * method configured.
+     *
+     * @param webhookParams  parameters for new webhook
+     * @param idempotencyKey idempotency key
+     * @return new webhook entity
+     * @throws IllegalArgumentException if webhook parameters is null
+     */
 
     public Webhook create(Webhook webhookParams, String idempotencyKey) {
         if (webhookParams == null) {
@@ -30,6 +77,19 @@ public class WebhookProcessor {
         }
         return client.sendRequest("POST", BASE_PATH, Map.of("Idempotence-Key", idempotencyKey), webhookParams, Webhook.class);
     }
+
+    /**
+     * Remove already existing {@link Webhook} by its identifier.
+     * <p>
+     * Generate random idempotency key
+     * if corresponding argument is null.
+     *
+     * @param webhookId      webhook identifier to be removed
+     * @param idempotencyKey idempotency key
+     * @return webhook entity
+     * @throws IllegalArgumentException if webhook identifier is null
+     *                                  or empty
+     */
 
     public Webhook removeById(String webhookId, String idempotencyKey) {
         if (webhookId == null || webhookId.isEmpty()) {

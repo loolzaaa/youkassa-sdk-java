@@ -14,6 +14,16 @@ import ru.loolzaaa.youkassa.pojo.*;
 
 import java.util.List;
 
+/**
+ * This class represents Refund object.
+ * <p>
+ * Contains up-to-date information about
+ * the return of a successful payment.
+ * <p>
+ * It comes in response to any request r
+ * elated to returns.
+ */
+
 @Getter
 @Builder
 @AllArgsConstructor

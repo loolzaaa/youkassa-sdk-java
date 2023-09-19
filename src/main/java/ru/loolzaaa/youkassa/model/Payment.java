@@ -15,6 +15,17 @@ import ru.loolzaaa.youkassa.pojo.*;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This class represents Payment object.
+ * <p>
+ * Contains all information about the payment
+ * that is relevant at the current time.
+ * <p>
+ * It is generated when creating a payment
+ * and comes in response to any request
+ * related to payments.
+ */
+
 @Getter
 @Builder
 @AllArgsConstructor
