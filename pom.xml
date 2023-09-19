@@ -6,7 +6,7 @@
 
     <groupId>ru.loolzaaa</groupId>
     <artifactId>youkassa-sdk-java</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.0.2</version>
     <packaging>jar</packaging>
 
     <name>YooKassa API Java Client Library</name>
