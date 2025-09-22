@@ -18,16 +18,14 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Receipt implements Validated {
+
+    private static final int MIN_TAX_SYSTEM_CODE_VALUE = 1;
+    private static final int MAX_TAX_SYSTEM_CODE_VALUE = 6;
+
     @JsonProperty("customer")
     private Customer customer;
     @JsonProperty("items")
     private List<Item> items;
-    @Deprecated
-    @JsonProperty("phone")
-    private String phone;
-    @Deprecated
-    @JsonProperty("email")
-    private String email;
     @JsonProperty("tax_system_code")
     private Integer taxSystemCode;
     @JsonProperty("receipt_industry_details")
@@ -40,15 +38,16 @@ public class Receipt implements Validated {
         if (customer != null) {
             customer.validate();
         }
-        if (items != null && items.size() > 0) {
+        if (items != null && !items.isEmpty()) {
             for (Item item : items) {
                 item.validate();
             }
         } else {
             throw new IllegalArgumentException("Receipt must contains at least one item");
         }
-        if (taxSystemCode != null && (taxSystemCode < 1 || taxSystemCode > 6)) {
-            throw new IllegalArgumentException("Incorrect tax system code. Min: 1. Max: 6");
+        if (taxSystemCode != null && (taxSystemCode < MIN_TAX_SYSTEM_CODE_VALUE || taxSystemCode > MAX_TAX_SYSTEM_CODE_VALUE)) {
+            throw new IllegalArgumentException("Incorrect tax system code. Min: %d. Max: %d"
+                    .formatted(MIN_TAX_SYSTEM_CODE_VALUE, MAX_TAX_SYSTEM_CODE_VALUE));
         }
         if (receiptIndustryDetails != null) {
             for (ReceiptIndustryDetail receiptIndustryDetail : receiptIndustryDetails) {
