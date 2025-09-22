@@ -9,8 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ru.loolzaaa.youkassa.client.RequestBody;
 import ru.loolzaaa.youkassa.client.Validated;
-import ru.loolzaaa.youkassa.pojo.Receipt;
 import ru.loolzaaa.youkassa.pojo.*;
+import ru.loolzaaa.youkassa.pojo.Receipt;
 
 import java.util.List;
 import java.util.Map;
@@ -100,6 +100,8 @@ public class Payment implements RequestBody {
     private Deal deal;
     @JsonProperty("merchant_customer_id")
     private String merchantCustomerId;
+    @JsonProperty("invoice_details")
+    private InvoiceDetails invoiceDetails;
 
     @Getter
     @Builder
