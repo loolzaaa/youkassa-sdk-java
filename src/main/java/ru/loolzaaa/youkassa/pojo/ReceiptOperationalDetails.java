@@ -17,6 +17,8 @@ import ru.loolzaaa.youkassa.client.Validated;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ReceiptOperationalDetails implements Validated {
 
+    private static final int MIN_OPERATION_ID_VALUE = 0;
+    private static final int MAX_OPERATION_ID_VALUE = 255;
     private static final int MAX_VALUE_LENGTH = 64;
     private static final String CREATED_AT_PATTERN = "\\d{4}-(0\\d|1[0-2])-([0-2]\\d|3[01])T([0-1]\\d|2[0-3]):[0-5]\\d:[0-5]\\d\\.\\d+Z";
 
@@ -32,8 +34,9 @@ public class ReceiptOperationalDetails implements Validated {
         if (operationId == null) {
             throw new IllegalArgumentException("Operation id must not be null");
         }
-        if (operationId < 0 || operationId > 255) {
-            throw new IllegalArgumentException("Incorrect operation id. Must be in range [0,255]");
+        if (operationId < MIN_OPERATION_ID_VALUE || operationId > MAX_OPERATION_ID_VALUE) {
+            throw new IllegalArgumentException("Incorrect operation id. Must be in range [%d,%d]"
+                    .formatted(MIN_OPERATION_ID_VALUE, MAX_OPERATION_ID_VALUE));
         }
         if (value == null) {
             throw new IllegalArgumentException("Value must not be null");
