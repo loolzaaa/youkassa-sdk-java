@@ -20,8 +20,11 @@ import java.util.List;
 public class Item implements Validated {
 
     private static final int MAX_DESCRIPTION_LENGTH = 128;
+    private static final int MIN_VAT_CODE_VALUE = 1;
+    private static final int MAX_VAT_CODE_VALUE = 10;
     private static final String QUANTITY_PATTERN = "\\d+\\.?\\d{0,3}";
     private static final String EXCISE_PATTERN = "\\d+\\.\\d{2}";
+    private static final String MARK_MODE_PATTERN = "^[0]$";
 
     @JsonProperty("description")
     private String description;
@@ -75,7 +78,7 @@ public class Item implements Validated {
         @Override
         public void validate() {
             if (numerator == null || denominator == null) {
-                throw new IllegalArgumentException("Numerator and denominator must no be null");
+                throw new IllegalArgumentException("Numerator and denominator must not be null");
             }
             if (numerator < 1 || numerator >= denominator) {
                 throw new IllegalArgumentException("Incorrect numerator. Must be greater than 1 and less than denominator");
@@ -135,7 +138,13 @@ public class Item implements Validated {
     @NoArgsConstructor
     @JsonIgnoreProperties(ignoreUnknown = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public static class PaymentSubjectIndustryDetail {
+    public static class PaymentSubjectIndustryDetail implements Validated {
+
+        private static final String FEDERAL_ID_PATTERN = "(^00[1-9]$)|(^0[1-6][0-9]$)|(^07[0-3]$)";
+        private static final String DOCUMENT_DATE_PATTERN = "^\\d{4}-(0\\d|1[0-2])-([0-2]\\d|3[01])$";
+        private static final int MAX_DOCUMENT_NUMBER_LENGTH = 32;
+        private static final int MAX_VALUE_LENGTH = 256;
+
         @JsonProperty("federal_id")
         private String federalId;
         @JsonProperty("document_date")
@@ -144,12 +153,43 @@ public class Item implements Validated {
         private String documentNumber;
         @JsonProperty("value")
         private String value;
+
+        @Override
+        public void validate() {
+            if (federalId == null) {
+                throw new IllegalArgumentException("Federal id must not be null");
+            }
+            if (!federalId.matches(FEDERAL_ID_PATTERN)) {
+                throw new IllegalArgumentException("Incorrect federal id. Correct pattern: " + FEDERAL_ID_PATTERN);
+            }
+            if (documentDate == null) {
+                throw new IllegalArgumentException("Document date must not be null");
+            }
+            if (!documentDate.matches(DOCUMENT_DATE_PATTERN)) {
+                throw new IllegalArgumentException("Incorrect document date. Correct pattern: " + DOCUMENT_DATE_PATTERN);
+            }
+            if (documentNumber == null) {
+                throw new IllegalArgumentException("Document number must not be null");
+            }
+            if (documentNumber.length() > MAX_DOCUMENT_NUMBER_LENGTH) {
+                throw new IllegalArgumentException("Too long document number. Max length: " + MAX_DOCUMENT_NUMBER_LENGTH);
+            }
+            if (value == null) {
+                throw new IllegalArgumentException("Value must not be null");
+            }
+            if (value.length() > MAX_VALUE_LENGTH) {
+                throw new IllegalArgumentException("Too long value. Max length: " + MAX_VALUE_LENGTH);
+            }
+        }
     }
 
     @Override
     public void validate() {
         if (description == null) {
             throw new IllegalArgumentException("Description must not be null");
+        }
+        if (description.isEmpty()) {
+            throw new IllegalArgumentException("Description must not be empty");
         }
         if (description.length() > MAX_DESCRIPTION_LENGTH) {
             throw new IllegalArgumentException("Too long description. Max length: " + MAX_DESCRIPTION_LENGTH);
@@ -161,8 +201,9 @@ public class Item implements Validated {
         if (vatCode == null) {
             throw new IllegalArgumentException("Vat code must not be null");
         }
-        if (vatCode < 1 || vatCode > 6) {
-            throw new IllegalArgumentException("Incorrect vat code. Min: 1. Max: 6");
+        if (vatCode < MIN_VAT_CODE_VALUE || vatCode > MAX_VAT_CODE_VALUE) {
+            throw new IllegalArgumentException("Incorrect vat code. Min: %d. Max: %d"
+                    .formatted(MIN_VAT_CODE_VALUE, MAX_DESCRIPTION_LENGTH));
         }
         if (quantity == null) {
             throw new IllegalArgumentException("Quantity must no be null");
@@ -173,11 +214,14 @@ public class Item implements Validated {
         if (markQuantity != null) {
             markQuantity.validate();
         }
-        if (customsDeclarationNumber != null && (customsDeclarationNumber.length() < 1 || customsDeclarationNumber.length() > 32)) {
+        if (customsDeclarationNumber != null && (customsDeclarationNumber.isEmpty() || customsDeclarationNumber.length() > 32)) {
             throw new IllegalArgumentException("Incorrect customs declaration number. Min: 1. Max: 32");
         }
         if (excise != null && !excise.matches(EXCISE_PATTERN)) {
             throw new IllegalArgumentException("Incorrect excise. Correct pattern: " + EXCISE_PATTERN);
+        }
+        if (markMode != null && !markMode.matches(MARK_MODE_PATTERN)) {
+            throw new IllegalArgumentException("Incorrect mark mode. Correct pattern: " + MARK_MODE_PATTERN);
         }
     }
 }
