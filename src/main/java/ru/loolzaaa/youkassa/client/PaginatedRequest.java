@@ -42,7 +42,7 @@ public abstract class PaginatedRequest {
         if (cursor != null) {
             params.add("cursor=" + cursor);
         }
-        String baseQueryParams = params.size() > 0 ? String.join("&", params) : "";
+        String baseQueryParams = !params.isEmpty() ? String.join("&", params) : "";
         String queryParams = getQuery();
         if (baseQueryParams.isEmpty() && !queryParams.isEmpty()) {
             return "?" + queryParams;

@@ -18,4 +18,7 @@ public class Currency {
                 KZT.equals(currency) ||
                 UAH.equals(currency);
     }
+
+    //TODO: parse official currencies
+    //TODO: improve validation in all amounts and other places
 }
