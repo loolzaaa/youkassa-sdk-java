@@ -34,16 +34,9 @@ public class Confirmation implements Validated {
     @JsonProperty("return_url")
     private String returnUrl;
 
-    public static class Type {
-        public static final String EMBEDDED = "embedded";
-        public static final String EXTERNAL = "external";
-        public static final String MOBILE_APPLICATION = "mobile_application";
-        public static final String QR_CODE = "qr";
-        public static final String REDIRECT = "redirect";
-    }
-
     @Override
     public void validate() {
+        //TODO: validate type by subclass values
         if (type == null) {
             throw new IllegalArgumentException("Type must not be null");
         }
@@ -53,5 +46,13 @@ public class Confirmation implements Validated {
         if (returnUrl != null && returnUrl.length() > MAX_RETURN_URL_LENGTH) {
             throw new IllegalArgumentException("Too long return url. Max length: " + MAX_RETURN_URL_LENGTH);
         }
+    }
+
+    public static class Type {
+        public static final String EMBEDDED = "embedded";
+        public static final String EXTERNAL = "external";
+        public static final String MOBILE_APPLICATION = "mobile_application";
+        public static final String QR_CODE = "qr";
+        public static final String REDIRECT = "redirect";
     }
 }
