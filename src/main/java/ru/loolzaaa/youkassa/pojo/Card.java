@@ -17,11 +17,11 @@ import ru.loolzaaa.youkassa.client.Validated;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Card implements Validated {
 
-    private static final String NUMBER_PATTERN = "\\d{16,19}";
+    private static final String NUMBER_PATTERN = "\\d{14,19}";
     private static final String EXPIRY_YEAR_PATTERN = "\\d{4}";
     private static final String EXPIRY_MONTH_PATTERN = "\\d{2}";
     private static final String CSC_PATTERN = "\\d{3,4}";
-    private static final String CARDHOLDER_PATTERN = "[a-zA-Z]{0,26}";
+    private static final String CARDHOLDER_PATTERN = "[a-zA-Z'-]{0,26}";
 
     @JsonProperty("first6")
     private String first6;
@@ -33,6 +33,8 @@ public class Card implements Validated {
     private String expiryMonth;
     @JsonProperty("card_type")
     private String cardType;
+    @JsonProperty("card_product")
+    private CardProduct cardProduct;
     @JsonProperty("issuer_country")
     private String issuerCountry;
     @JsonProperty("issuer_name")
@@ -54,9 +56,6 @@ public class Card implements Validated {
         if (!number.matches(NUMBER_PATTERN)) {
             throw new IllegalArgumentException("Incorrect number. Correct pattern: " + NUMBER_PATTERN);
         }
-        if (expiryYear == null || expiryMonth == null) {
-            throw new IllegalArgumentException("Expiry date must not be null");
-        }
         if (!expiryYear.matches(EXPIRY_YEAR_PATTERN)) {
             throw new IllegalArgumentException("Incorrect expiry year. Correct pattern: " + EXPIRY_YEAR_PATTERN);
         }
@@ -68,6 +67,26 @@ public class Card implements Validated {
         }
         if (cardHolder != null && !cardHolder.matches(CARDHOLDER_PATTERN)) {
             throw new IllegalArgumentException("Incorrect cardholder. Correct pattern: " + CARDHOLDER_PATTERN);
+        }
+    }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public static class CardProduct implements Validated {
+        @JsonProperty("code")
+        private String code;
+        @JsonProperty("name")
+        private String name;
+
+        @Override
+        public void validate() {
+            if (code == null) {
+                throw new IllegalArgumentException("Code must not be null");
+            }
         }
     }
 }
