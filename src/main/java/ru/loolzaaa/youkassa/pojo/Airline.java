@@ -38,7 +38,7 @@ public class Airline implements Validated {
         if (ticketNumber != null && !ticketNumber.matches(TICKET_NUMBER_PATTERN)) {
             throw new IllegalArgumentException("Incorrect ticket number. Correct pattern: " + TICKET_NUMBER_PATTERN);
         }
-        if (bookingReference != null && (bookingReference.length() < 1 || bookingReference.length() > 20)) {
+        if (bookingReference != null && (bookingReference.isEmpty() || bookingReference.length() > 20)) {
             throw new IllegalArgumentException("Incorrect booking reference length. Min: 1. Max: 20");
         }
         for (Passenger passenger : passengers) {
