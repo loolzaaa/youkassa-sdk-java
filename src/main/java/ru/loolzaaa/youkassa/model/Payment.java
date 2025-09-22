@@ -98,8 +98,6 @@ public class Payment implements RequestBody {
     private List<Transfer> transfers;
     @JsonProperty("deal")
     private Deal deal;
-    @JsonProperty("fraud_data")
-    private FraudData fraudData;
     @JsonProperty("merchant_customer_id")
     private String merchantCustomerId;
 
@@ -129,27 +127,6 @@ public class Payment implements RequestBody {
             }
             for (Settlement settlement : settlements) {
                 settlement.validate();
-            }
-        }
-    }
-
-    @Getter
-    @Builder
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @JsonIgnoreProperties(ignoreUnknown = true)
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public static class FraudData implements Validated {
-
-        private static final String PHONE_PATTERN = "\\d{4,15}";
-
-        @JsonProperty("topped_up_phone")
-        private String toppedUpPhone;
-
-        @Override
-        public void validate() {
-            if (toppedUpPhone != null && !toppedUpPhone.matches(PHONE_PATTERN)) {
-                throw new IllegalArgumentException("Incorrect topped up phone. Correct pattern: " + PHONE_PATTERN);
             }
         }
     }
@@ -271,9 +248,6 @@ public class Payment implements RequestBody {
         }
         if (payment.getDeal() != null) {
             payment.getDeal().validate();
-        }
-        if (payment.getFraudData() != null) {
-            payment.getFraudData().validate();
         }
         if (payment.getMerchantCustomerId() != null && payment.getMerchantCustomerId().length() > MAX_MERCHANT_CUSTOMER_ID_LENGTH) {
             throw new IllegalArgumentException("Too long merchantCustomerId. Max length: " + MAX_MERCHANT_CUSTOMER_ID_LENGTH);
