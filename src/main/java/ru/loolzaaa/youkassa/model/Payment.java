@@ -109,6 +109,9 @@ public class Payment implements RequestBody {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class Deal implements Validated {
 
+        private static final int MIN_ID_LENGTH = 36;
+        private static final int MAX_ID_LENGTH = 50;
+
         @JsonProperty("id")
         private String id;
         @JsonProperty("settlements")
@@ -116,11 +119,13 @@ public class Payment implements RequestBody {
 
         @Override
         public void validate() {
+            //TODO: No need to validate id if capture payment
             if (id == null) {
                 throw new IllegalArgumentException("Id must not be null");
             }
-            if (id.length() < 36 || id.length() > 50) {
-                throw new IllegalArgumentException("Incorrect id length. Must be from 36 to 50 inclusively");
+            if (id.length() < MIN_ID_LENGTH || id.length() > MAX_ID_LENGTH) {
+                throw new IllegalArgumentException("Incorrect id length. Must be from %d to %d inclusively"
+                        .formatted(MIN_ID_LENGTH, MAX_ID_LENGTH));
             }
             if (settlements == null) {
                 throw new IllegalArgumentException("Settlements must not be null");
