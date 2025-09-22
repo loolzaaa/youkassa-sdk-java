@@ -41,5 +41,8 @@ public class Customer implements Validated {
         if (phone != null && phone.length() > MAX_PHONE_LENGTH) {
             throw new IllegalArgumentException("Too long phone. Max length: " + MAX_PHONE_LENGTH);
         }
+        if (email == null && phone == null) {
+            throw new IllegalArgumentException("Email must not be null if phone is null");
+        }
     }
 }
