@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ru.loolzaaa.youkassa.client.RequestBody;
+import ru.loolzaaa.youkassa.helper.ApiHelper;
 import ru.loolzaaa.youkassa.pojo.Amount;
 
 import java.util.Map;
@@ -61,10 +62,15 @@ public class Deal implements RequestBody {
     @JsonProperty("test")
     private Boolean test;
 
+    public static class Type {
+        public static final String SAFE_DEAL = "safe_deal";
+    }
+
     public static void createValidation(Deal deal) {
         if (deal.getType() == null) {
             throw new IllegalArgumentException("Type must not be null");
         }
+        ApiHelper.checkObjectType(deal, "type", String.class, "Type");
         if (deal.getFeeMoment() == null) {
             throw new IllegalArgumentException("fee moment must not be null");
         }
