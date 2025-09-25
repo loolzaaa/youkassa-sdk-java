@@ -8,7 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ru.loolzaaa.youkassa.client.RequestBody;
-import ru.loolzaaa.youkassa.client.Validated;
+import ru.loolzaaa.youkassa.helper.ApiHelper;
 import ru.loolzaaa.youkassa.pojo.*;
 
 import java.util.List;
@@ -68,36 +68,6 @@ public class Receipt implements RequestBody {
     @JsonProperty("receipt_operational_details")
     private ReceiptOperationalDetails receiptOperationalDetails;
 
-    @Getter
-    @Builder
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @JsonIgnoreProperties(ignoreUnknown = true)
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public static class AdditionalUserProps implements Validated {
-
-        private static final int MAX_NAME_LENGTH = 64;
-        private static final int MAX_VALUE_LENGTH = 234;
-
-        @JsonProperty("name")
-        private String name;
-        @JsonProperty("value")
-        private String value;
-
-        @Override
-        public void validate() {
-            if (name == null || value == null) {
-                throw new IllegalArgumentException("Name and value must not be null");
-            }
-            if (name.length() > MAX_NAME_LENGTH) {
-                throw new IllegalArgumentException("Too long name. Max length: " + MAX_NAME_LENGTH);
-            }
-            if (value.length() > MAX_VALUE_LENGTH) {
-                throw new IllegalArgumentException("Too long value. Max length: " + MAX_VALUE_LENGTH);
-            }
-        }
-    }
-
     public static class Type {
         public static final String PAYMENT = "payment";
         public static final String REFUND = "refund";
@@ -107,11 +77,12 @@ public class Receipt implements RequestBody {
         if (receipt.getType() == null) {
             throw new IllegalArgumentException("Type must not be null");
         }
+        ApiHelper.checkObjectType(receipt, "type", String.class, "Type");
         if (receipt.getCustomer() == null) {
             throw new IllegalArgumentException("Customer must not be null");
         }
         receipt.getCustomer().validate();
-        if (receipt.getItems() != null && receipt.getItems().size() > 0) {
+        if (receipt.getItems() != null && !receipt.getItems().isEmpty()) {
             for (Item item : receipt.getItems()) {
                 item.validate();
             }
