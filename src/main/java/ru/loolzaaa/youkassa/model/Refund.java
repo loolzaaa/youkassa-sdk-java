@@ -9,8 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ru.loolzaaa.youkassa.client.RequestBody;
 import ru.loolzaaa.youkassa.client.Validated;
-import ru.loolzaaa.youkassa.pojo.Receipt;
 import ru.loolzaaa.youkassa.pojo.*;
+import ru.loolzaaa.youkassa.pojo.Receipt;
 
 import java.util.List;
 
@@ -56,6 +56,12 @@ public class Refund implements RequestBody {
     private List<Source> sources;
     @JsonProperty("deal")
     private Deal deal;
+    @JsonProperty("refund_method")
+    private RefundMethod refundMethod;
+    @JsonProperty("refund_method_data")
+    private RefundMethod refundMethodData;
+    @JsonProperty("refund_authorization_details")
+    private RefundAuthorizationDetails refundAuthorizationDetails;
 
     @Getter
     @Builder
@@ -101,6 +107,9 @@ public class Refund implements RequestBody {
         }
         if (refund.getDeal() != null) {
             refund.getDeal().validate();
+        }
+        if (refund.getRefundMethodData() != null) {
+            refund.getRefundMethodData().validate();
         }
     }
 }
