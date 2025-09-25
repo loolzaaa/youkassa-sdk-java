@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ru.loolzaaa.youkassa.client.RequestBody;
 import ru.loolzaaa.youkassa.client.Validated;
+import ru.loolzaaa.youkassa.helper.ApiHelper;
 import ru.loolzaaa.youkassa.pojo.*;
 import ru.loolzaaa.youkassa.pojo.Receipt;
 
@@ -100,6 +101,10 @@ public class Payment implements RequestBody {
     private Deal deal;
     @JsonProperty("merchant_customer_id")
     private String merchantCustomerId;
+    @JsonProperty("payment_order")
+    private PaymentOrder paymentOrder;
+    @JsonProperty("receiver")
+    private Receiver receiver;
     @JsonProperty("invoice_details")
     private InvoiceDetails invoiceDetails;
 
@@ -145,37 +150,83 @@ public class Payment implements RequestBody {
     @JsonIgnoreProperties(ignoreUnknown = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class PaymentMethod implements Validated {
+
+        private static final int PAYMENT_PURPOSE_MAX_LENGTH = 210;
+
         @JsonProperty("type")
         private String type;
         @JsonProperty("id")
         private String id;
         @JsonProperty("saved")
         private Boolean saved;
+        @JsonProperty("status")
+        private String status;
         @JsonProperty("title")
         private String title;
         @JsonProperty("discount_amount")
         private Amount discountAmount;
         @JsonProperty("loan_option")
         private String loanOption;
-        @JsonProperty("logine")
+        @JsonProperty("suspended_until")
+        private String suspendedUntil;
+        @JsonProperty("login")
         private String login;
+        @JsonProperty("payer_bank_details")
+        private PayerBankDetails payerBankDetails;
+        @JsonProperty("sbp_operation_id")
+        private String sbpOperationId;
         @JsonProperty("account_number")
         private String accountNumber;
         @JsonProperty("phone")
         private String phone;
         @JsonProperty("card")
         private Card card;
+        @JsonProperty("payment_purpose")
+        private String paymentPurpose;
+        @JsonProperty("vat_data")
+        private VatData vatData;
+        @JsonProperty("articles")
+        private List<Article> articles;
+        @JsonProperty("electronic_certificate")
+        private ElectronicCertificate electronicCertificate;
+
 
         @Override
         public void validate() {
             if (type == null) {
                 throw new IllegalArgumentException("Type must not be null");
             }
+            ApiHelper.checkObjectType(this, "type", String.class, "Type");
             if (type.equals(Type.MOBILE_BALANCE) && phone == null) {
                 throw new IllegalArgumentException("Phone must not be null if type " + Type.MOBILE_BALANCE);
             }
-            if (card != null) {
+            if (type.equals(Type.BANK_CARD) && card != null) {
                 card.validate();
+            }
+            if (type.equals(Type.SBER_BUSINESS_ONLINE)) {
+                if (paymentPurpose == null) {
+                    throw new IllegalArgumentException("Payment purpose must not be null");
+                }
+                if (paymentPurpose.length() > PAYMENT_PURPOSE_MAX_LENGTH) {
+                    throw new IllegalArgumentException("Payment purpose too long. Max length: " + PAYMENT_PURPOSE_MAX_LENGTH);
+                }
+                if (vatData == null) {
+                    throw new IllegalArgumentException("Vat data must not be null");
+                }
+                vatData.validate();
+            }
+            if (type.equals(Type.ELECTRONIC_CERTIFICATE)) {
+                if (articles != null) {
+                    for (Article article : articles) {
+                        article.validate();
+                    }
+                }
+                if (card != null) {
+                    card.validate();
+                }
+                if (electronicCertificate != null) {
+                    electronicCertificate.validate();
+                }
             }
         }
 
@@ -186,13 +237,16 @@ public class Payment implements RequestBody {
             public static final String BANK_CARD = "bank_card";
             public static final String INSTALLMENTS = "installments";
             public static final String CASH = "cash";
+            public static final String SBER_PARTS_PAY = "sber_bnpl";
             public static final String SBP = "sbp";
-            public static final String TINKOFF_BANK = "tinkoff_bank";
+            public static final String SBER_BUSINESS_ONLINE = "b2b_sberbank";
+            public static final String ELECTRONIC_CERTIFICATE = "electronic_certificate";
             public static final String YOO_MONEY = "yoo_money";
             public static final String APPLE_PAY = "apple_pay";
             public static final String GOOGLE_PAY = "google_pay";
             public static final String QIWI = "qiwi";
             public static final String SBER_PAY = "sberbank";
+            public static final String T_PAY = "tinkoff_bank";
             public static final String WECHAT = "wechat";
             public static final String WEBMONEY = "webmoney";
         }
@@ -203,6 +257,12 @@ public class Payment implements RequestBody {
         public static final String WAITING_FOR_CAPTURE = "waiting_for_capture";
         public static final String SUCCEEDED = "succeeded";
         public static final String CANCELED = "canceled";
+    }
+
+    public static class ReceiptRegistration {
+        public static final String PENDING = "pending";
+        public static final String SUCCEEDED = "succeeded ";
+        public static final String CANCELED = "canceled ";
     }
 
     public static void createValidation(Payment payment) {
@@ -219,12 +279,6 @@ public class Payment implements RequestBody {
         }
         if (payment.getRecipient() != null) {
             payment.getRecipient().validate();
-        }
-        if (payment.getPaymentToken() != null && (payment.getPaymentMethodId() != null || payment.getPaymentMethodData() != null)) {
-            throw new IllegalArgumentException("Both payment token and payment method id/payment data values are specified");
-        }
-        if (payment.getPaymentMethodId() != null && payment.getPaymentMethodData() != null) {
-            throw new IllegalArgumentException("Both payment method id and payment data values are specified");
         }
         if (payment.getPaymentMethodData() != null) {
             payment.getPaymentMethodData().validate();
@@ -259,6 +313,12 @@ public class Payment implements RequestBody {
         if (payment.getMerchantCustomerId() != null && payment.getMerchantCustomerId().length() > MAX_MERCHANT_CUSTOMER_ID_LENGTH) {
             throw new IllegalArgumentException("Too long merchantCustomerId. Max length: " + MAX_MERCHANT_CUSTOMER_ID_LENGTH);
         }
+        if (payment.getPaymentOrder() != null) {
+            payment.getPaymentOrder().validate();
+        }
+        if (payment.getReceiver() != null) {
+            payment.getReceiver().validate();
+        }
     }
 
     public static void captureValidation(Payment payment) {
@@ -277,7 +337,7 @@ public class Payment implements RequestBody {
             }
         }
         if (payment.getDeal() != null) {
-            // This validation also checks deal id. Is this problem?
+            //TODO: This validation also checks deal id. Is this problem?
             payment.getDeal().validate();
         }
     }

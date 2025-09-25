@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ru.loolzaaa.youkassa.client.Validated;
+import ru.loolzaaa.youkassa.helper.ApiHelper;
 
 @Getter
 @Builder
@@ -23,10 +24,10 @@ public class Settlement implements Validated {
 
     @Override
     public void validate() {
-        //TODO: check type values by available in subclass
         if (type == null || amount == null) {
             throw new IllegalArgumentException("Type and amount must not be null");
         }
+        ApiHelper.checkObjectType(this, "type", String.class, "Type");
         amount.validate();
     }
 

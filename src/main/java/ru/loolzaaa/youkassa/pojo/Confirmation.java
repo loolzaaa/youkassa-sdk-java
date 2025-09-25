@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ru.loolzaaa.youkassa.client.Validated;
+import ru.loolzaaa.youkassa.helper.ApiHelper;
 
 @Getter
 @Builder
@@ -36,10 +37,10 @@ public class Confirmation implements Validated {
 
     @Override
     public void validate() {
-        //TODO: validate type by subclass values
         if (type == null) {
             throw new IllegalArgumentException("Type must not be null");
         }
+        ApiHelper.checkObjectType(this, "type", String.class, "Type");
         if (type.equals(Type.MOBILE_APPLICATION) && returnUrl == null) {
             throw new IllegalArgumentException("Return url must not be null if type " + Type.MOBILE_APPLICATION);
         }

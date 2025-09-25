@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ru.loolzaaa.youkassa.client.Validated;
+import ru.loolzaaa.youkassa.helper.ApiHelper;
 
 import java.util.List;
 
@@ -20,8 +21,6 @@ import java.util.List;
 public class Item implements Validated {
 
     private static final int MAX_DESCRIPTION_LENGTH = 128;
-    private static final int MIN_VAT_CODE_VALUE = 1;
-    private static final int MAX_VAT_CODE_VALUE = 10;
     private static final String QUANTITY_PATTERN = "\\d+\\.?\\d{0,3}";
     private static final String EXCISE_PATTERN = "\\d+\\.\\d{2}";
     private static final String MARK_MODE_PATTERN = "^[0]$";
@@ -201,10 +200,7 @@ public class Item implements Validated {
         if (vatCode == null) {
             throw new IllegalArgumentException("Vat code must not be null");
         }
-        if (vatCode < MIN_VAT_CODE_VALUE || vatCode > MAX_VAT_CODE_VALUE) {
-            throw new IllegalArgumentException("Incorrect vat code. Min: %d. Max: %d"
-                    .formatted(MIN_VAT_CODE_VALUE, MAX_DESCRIPTION_LENGTH));
-        }
+        ApiHelper.checkObjectType(this, "vatCode", int.class, "VatCodeType");
         if (quantity == null) {
             throw new IllegalArgumentException("Quantity must no be null");
         }
@@ -223,5 +219,18 @@ public class Item implements Validated {
         if (markMode != null && !markMode.matches(MARK_MODE_PATTERN)) {
             throw new IllegalArgumentException("Incorrect mark mode. Correct pattern: " + MARK_MODE_PATTERN);
         }
+    }
+
+    public static class VatCodeType {
+        public static final int NO_NDS = 1;
+        public static final int NDS_0 = 2;
+        public static final int NDS_10 = 3;
+        public static final int NDS_20 = 4;
+        public static final int NDS_10_110 = 5;
+        public static final int NDS_20_120 = 6;
+        public static final int NDS_5 = 7;
+        public static final int NDS_7 = 8;
+        public static final int NDS_5_105 = 9;
+        public static final int NDS_7_107 = 10;
     }
 }
