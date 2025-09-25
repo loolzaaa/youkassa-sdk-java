@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import ru.loolzaaa.youkassa.client.RequestBody;
 import ru.loolzaaa.youkassa.client.Validated;
 import ru.loolzaaa.youkassa.pojo.*;
+import ru.loolzaaa.youkassa.pojo.PersonalData;
 import ru.loolzaaa.youkassa.pojo.SelfEmployed;
 
 import java.util.Map;
