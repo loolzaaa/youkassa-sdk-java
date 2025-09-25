@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import ru.loolzaaa.youkassa.model.Payout;
 import ru.loolzaaa.youkassa.pojo.Amount;
 import ru.loolzaaa.youkassa.pojo.Currency;
+import ru.loolzaaa.youkassa.pojo.PayoutDestination;
 
 import java.util.Map;
 
@@ -41,8 +42,8 @@ class PayoutProcessorTest {
     void executeCreate() {
         Payout payoutParams = Payout.builder()
                 .amount(Amount.builder().value("100.00").currency(Currency.RUB).build())
-                .payoutDestinationData(Payout.PayoutDestination.builder()
-                        .type(Payout.PayoutDestination.Type.SBP)
+                .payoutDestinationData(PayoutDestination.builder()
+                        .type(PayoutDestination.Type.SBP)
                         .bankId("1")
                         .phone("1234567890")
                         .build())
@@ -59,8 +60,8 @@ class PayoutProcessorTest {
     void executeCreateWithRandomIdempotenceKey() {
         Payout payoutParams = Payout.builder()
                 .amount(Amount.builder().value("100.00").currency(Currency.RUB).build())
-                .payoutDestinationData(Payout.PayoutDestination.builder()
-                        .type(Payout.PayoutDestination.Type.SBP)
+                .payoutDestinationData(PayoutDestination.builder()
+                        .type(PayoutDestination.Type.SBP)
                         .bankId("1")
                         .phone("1234567890")
                         .build())
