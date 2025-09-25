@@ -52,8 +52,9 @@ class ReceiptProcessorTest {
     @Test
     void executeCreate() {
         Receipt receiptParams = Receipt.builder()
-                .type("test")
-                .customer(Customer.builder().build())
+                .type(Receipt.Type.PAYMENT)
+                .paymentId("1234")
+                .customer(Customer.builder().phone("1234").build())
                 .items(List.of(Item.builder()
                         .description("test")
                         .quantity("1")
@@ -62,7 +63,7 @@ class ReceiptProcessorTest {
                         .build()))
                 .send(true)
                 .settlements(List.of(Settlement.builder()
-                        .type("test")
+                        .type(Settlement.Type.PREPAYMENT)
                         .amount(Amount.builder().value("100.00").currency(Currency.RUB).build())
                         .build()))
                 .build();
@@ -77,8 +78,9 @@ class ReceiptProcessorTest {
     @Test
     void executeCreateWithRandomIdempotenceKey() {
         Receipt receiptParams = Receipt.builder()
-                .type("test")
-                .customer(Customer.builder().build())
+                .type(Receipt.Type.PAYMENT)
+                .paymentId("1234")
+                .customer(Customer.builder().phone("1234").build())
                 .items(List.of(Item.builder()
                         .description("test")
                         .quantity("1")
@@ -87,7 +89,7 @@ class ReceiptProcessorTest {
                         .build()))
                 .send(true)
                 .settlements(List.of(Settlement.builder()
-                        .type("test")
+                        .type(Settlement.Type.PREPAYMENT)
                         .amount(Amount.builder().value("100.00").currency(Currency.RUB).build())
                         .build()))
                 .build();

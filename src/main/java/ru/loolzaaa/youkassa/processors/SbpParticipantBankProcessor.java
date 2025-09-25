@@ -26,7 +26,7 @@ public class SbpParticipantBankProcessor {
      * @return entity that represents SBP participants
      */
 
-    public SbpParticipantBank findMe() {
+    public SbpParticipantBank findSbpParticipants() {
         return client.sendRequest("GET", BASE_PATH, null, null, SbpParticipantBank.class);
     }
 }

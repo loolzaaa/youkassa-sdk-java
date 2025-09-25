@@ -200,7 +200,7 @@ public class Item implements Validated {
         if (vatCode == null) {
             throw new IllegalArgumentException("Vat code must not be null");
         }
-        ApiHelper.checkObjectType(this, "vatCode", int.class, "VatCodeType");
+        ApiHelper.checkObjectType(this, "vatCode", Integer.class, "VatCodeType");
         if (quantity == null) {
             throw new IllegalArgumentException("Quantity must no be null");
         }

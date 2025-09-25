@@ -49,7 +49,7 @@ class DealProcessorTest {
 
     @Test
     void executeCreate() {
-        Deal dealParams = Deal.builder().type("test").feeMoment("test").build();
+        Deal dealParams = Deal.builder().type(Deal.Type.SAFE_DEAL).feeMoment("test").build();
         dealProcessor.create(dealParams, "1234");
 
         assertEquals("POST", client.method);
@@ -60,7 +60,7 @@ class DealProcessorTest {
 
     @Test
     void executeCreateWithRandomIdempotenceKey() {
-        Deal dealParams = Deal.builder().type("test").feeMoment("test").build();
+        Deal dealParams = Deal.builder().type(Deal.Type.SAFE_DEAL).feeMoment("test").build();
         dealProcessor.create(dealParams, null);
 
         assertEquals("POST", client.method);
