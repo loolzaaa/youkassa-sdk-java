@@ -48,11 +48,11 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.version>11</java.version>
+        <java.version>17</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <jackson.version>2.15.2</jackson.version>
-        <lombok.version>1.18.28</lombok.version>
+        <lombok.version>1.18.42</lombok.version>
         <junit.version>5.10.0</junit.version>
         <wiremock.version>2.35.0</wiremock.version>
         <assertj.version>3.24.2</assertj.version>
