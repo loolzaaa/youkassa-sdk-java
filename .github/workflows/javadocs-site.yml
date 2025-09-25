@@ -1,7 +1,6 @@
 name: Deploy Javadocs to Pages
 on:
   push:
-    #branches: ["master"]
   workflow_dispatch:
 permissions:
   contents: read
@@ -17,13 +16,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5.0.0
       - name: Setup Pages
-        uses: actions/configure-pages@v3
+        uses: actions/configure-pages@v5.0.0
       - name: Build Javadocs with Maven
         run: mvn javadoc:javadoc
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
+        uses: actions/upload-pages-artifact@v4.0.0
         with:
           path: target/site/apidocs/
   deploy:
@@ -35,4 +34,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v2
+        uses: actions/deploy-pages@v4.0.5
