@@ -13,6 +13,21 @@ import ru.loolzaaa.youkassa.pojo.CancellationDetails;
 
 import java.util.Map;
 
+/**
+ * This class represents personal data object.
+ * <p>
+ * The Personal Data object (PersonalData) contains
+ * up-to-date information about the user's personal
+ * data stored in YooKassa. It is generated when
+ * personal data is created and is sent in response
+ * to any request related to the user's personal data.
+ * <p>
+ * The set of returned parameters depends on the object's
+ * status (the value of the status parameter)
+ * and the parameters you passed in the request
+ * to create personal data.
+ */
+
 @Getter
 @Builder
 @AllArgsConstructor

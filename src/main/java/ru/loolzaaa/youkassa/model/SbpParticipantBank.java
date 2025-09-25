@@ -9,6 +9,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ru.loolzaaa.youkassa.client.RequestBody;
 
+/**
+ * This class represents SBP participants object.
+ * <p>
+ * The SBP participant object (SbpParticipantBank)
+ * contains information about the bank or payment service
+ * connected to the SBP. It is returned in the list
+ * when requesting a list of SBP participants.
+ */
+
 @Getter
 @Builder
 @AllArgsConstructor

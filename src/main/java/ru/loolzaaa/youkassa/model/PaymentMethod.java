@@ -12,6 +12,21 @@ import ru.loolzaaa.youkassa.pojo.Card;
 import ru.loolzaaa.youkassa.pojo.Confirmation;
 import ru.loolzaaa.youkassa.pojo.Recipient;
 
+/**
+ * This class represents payment method object.
+ * <p>
+ * The PaymentMethod object contains all the current
+ * information about the user's payment method.
+ * It is generated when the payment method is created
+ * and is returned in response to any request related
+ * to payment methods.
+ * <p>
+ * The set of returned parameters depends on the object's
+ * status (the value of the status parameter)
+ * and the parameters you passed in the request
+ * to create the payment method.
+ */
+
 @Getter
 @Builder
 @AllArgsConstructor

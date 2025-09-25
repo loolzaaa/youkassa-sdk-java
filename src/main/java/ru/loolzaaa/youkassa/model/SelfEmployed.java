@@ -10,6 +10,21 @@ import lombok.NoArgsConstructor;
 import ru.loolzaaa.youkassa.client.RequestBody;
 import ru.loolzaaa.youkassa.pojo.Confirmation;
 
+/**
+ * This class represents self-employed object.
+ * <p>
+ * The Self-Employed object contains all the current
+ * information about the self-employed individual.
+ * It is generated when the self-employed individual
+ * is created and is returned in response
+ * to any request related to self-employed individuals.
+ * <p>
+ * The set of returned parameters depends on the object's
+ * status (the value of the status parameter)
+ * and the parameters you passed in the request
+ * to create the self-employed individual.
+ */
+
 @Getter
 @Builder
 @AllArgsConstructor

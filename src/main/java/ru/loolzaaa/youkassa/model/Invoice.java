@@ -13,6 +13,20 @@ import ru.loolzaaa.youkassa.pojo.*;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This class represents Invoice object.
+ * <p>
+ * The Invoice object contains all the current
+ * invoice information. It is generated when an invoice
+ * is created and is returned in response
+ * to any invoice-related request.
+ * <p>
+ * The set of returned parameters depends on
+ * the object's status (the value of the status parameter)
+ * and the parameters you passed
+ * in the invoice creation request.
+ */
+
 @Getter
 @Builder
 @AllArgsConstructor

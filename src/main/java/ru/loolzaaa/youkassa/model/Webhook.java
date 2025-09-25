@@ -11,7 +11,7 @@ import ru.loolzaaa.youkassa.client.RequestBody;
 
 /**
  * This class represents Webhook object.
- *
+ * <p>
  * Contains information about subscribing
  * to a single event.
  *
