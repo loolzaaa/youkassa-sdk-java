@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ru.loolzaaa.youkassa.pojo.Amount;
+import ru.loolzaaa.youkassa.pojo.Fiscalization;
 
 import java.util.List;
 
@@ -43,6 +44,8 @@ public class Me {
     private String status;
     @JsonProperty("test")
     private Boolean test;
+    @JsonProperty("fiscalization")
+    private Fiscalization fiscalization;
     @JsonProperty("fiscalization_enabled")
     private Boolean fiscalizationEnabled;
     @JsonProperty("payment_methods")
@@ -55,4 +58,6 @@ public class Me {
     private String name;
     @JsonProperty("payout_balance")
     private Amount payoutBalance;
+    @JsonProperty("on_behalf_of")
+    private String onBehalfOf;
 }
