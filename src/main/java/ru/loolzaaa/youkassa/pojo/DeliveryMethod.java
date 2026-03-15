@@ -24,6 +24,10 @@ public class DeliveryMethod implements Validated {
     private String type;
     @JsonProperty("url")
     private String url;
+    @JsonProperty("email")
+    private String email;
+    @JsonProperty("phone")
+    private String phone;
 
     @Override
     public void validate() {
@@ -31,6 +35,15 @@ public class DeliveryMethod implements Validated {
             throw new IllegalArgumentException("Type must not be null");
         }
         ApiHelper.checkObjectType(this, "type", String.class, "Type");
+        if (type.equals(Type.SELF) && url == null) {
+            throw new IllegalArgumentException("Url must not be null if type equals " + Type.SELF);
+        }
+        if (type.equals(Type.EMAIL) && email == null) {
+            throw new IllegalArgumentException("Email must not be null if type equals " + Type.EMAIL);
+        }
+        if (type.equals(Type.SMS) && phone == null) {
+            throw new IllegalArgumentException("Phone must not be null if type equals " + Type.SMS);
+        }
         if (url != null && url.length() > MAX_URL_LENGTH) {
             throw new IllegalArgumentException("Incorrect url length. Max length: " + MAX_URL_LENGTH);
         }
@@ -38,5 +51,7 @@ public class DeliveryMethod implements Validated {
 
     public static class Type {
         public static final String SELF = "self";
+        public static final String EMAIL = "email";
+        public static final String SMS = "sms";
     }
 }

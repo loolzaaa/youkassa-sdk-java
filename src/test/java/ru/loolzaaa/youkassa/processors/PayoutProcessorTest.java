@@ -6,6 +6,7 @@ import ru.loolzaaa.youkassa.model.Payout;
 import ru.loolzaaa.youkassa.pojo.Amount;
 import ru.loolzaaa.youkassa.pojo.Currency;
 import ru.loolzaaa.youkassa.pojo.PayoutDestination;
+import ru.loolzaaa.youkassa.pojo.list.PayoutList;
 
 import java.util.Map;
 
@@ -36,6 +37,33 @@ class PayoutProcessorTest {
     void throwsFindById() {
         assertThrows(IllegalArgumentException.class, () -> payoutProcessor.findById(null));
         assertThrows(IllegalArgumentException.class, () -> payoutProcessor.findById(""));
+    }
+
+    @Test
+    void executeFindAll() {
+        PayoutList payoutList = PayoutList.builder().createdAtGt("2023-01-01T10:10:10.100Z").limit(10).build();
+        payoutProcessor.findAll(payoutList);
+
+        assertEquals("GET", client.method);
+        assertEquals("/payouts?limit=10&created_at.gt=2023-01-01T10:10:10.100Z", client.path);
+        assertNull(client.headers);
+        assertNull(client.body);
+    }
+
+    @Test
+    void executeSearchByMetadata() {
+        Map<String, String> metadata = Map.of("key", "value");
+        PayoutList payoutList = PayoutList.builder()
+                .createdAtGt("2023-01-01T10:10:10.100Z")
+                .metadata(metadata)
+                .limit(10)
+                .build();
+        payoutProcessor.searchByMetadata(payoutList);
+
+        assertEquals("GET", client.method);
+        assertEquals("/payouts/search?limit=10&created_at.gt=2023-01-01T10:10:10.100Z&metadata%5Bkey%5D%3Dvalue", client.path);
+        assertNull(client.headers);
+        assertNull(client.body);
     }
 
     @Test

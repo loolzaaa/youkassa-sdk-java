@@ -19,6 +19,8 @@ public class PaymentPeriod implements Validated {
 
     private static final int MIN_MONTH_VALUE = 1;
     private static final int MAX_MONTH_VALUE = 12;
+    private static final int MIN_YEAR_VALUE = 1920;
+    private static final int MAX_YEAR_VALUE = 2050;
 
     @JsonProperty("month")
     private Integer month;
@@ -33,6 +35,10 @@ public class PaymentPeriod implements Validated {
         if (month < MIN_MONTH_VALUE || month > MAX_MONTH_VALUE) {
             throw new IllegalArgumentException("Incorrect month. Min value: %d. Max value: %d"
                     .formatted(MIN_MONTH_VALUE, MAX_MONTH_VALUE));
+        }
+        if (year < MIN_YEAR_VALUE || year > MAX_YEAR_VALUE) {
+            throw new IllegalArgumentException("Incorrect year. Min value: %d. Max value: %d"
+                    .formatted(MIN_YEAR_VALUE, MAX_YEAR_VALUE));
         }
     }
 }

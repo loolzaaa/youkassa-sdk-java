@@ -1,4 +1,4 @@
-![API last update date](https://badgen.net/static/API%20date/2025-08-21/orange)
+![API last update date](https://badgen.net/static/API%20date/2026-02-27/orange)
 
 # YooKassa API Java Client Library (unofficial)
 **Неофициальный** клиент для работы с платежами по [API ЮKassa](https://yookassa.ru/developers/api).

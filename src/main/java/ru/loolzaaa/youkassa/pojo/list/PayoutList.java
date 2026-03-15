@@ -5,39 +5,35 @@ import lombok.Getter;
 import lombok.Setter;
 import ru.loolzaaa.youkassa.client.PaginatedRequest;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Getter
 @Setter
-public class PaymentList extends PaginatedRequest {
+public class PayoutList extends PaginatedRequest {
 
     private String createdAtGte;
     private String createdAtGt;
     private String createdAtLte;
     private String createdAtLt;
-    private String capturedAtGte;
-    private String capturedAtGt;
-    private String capturedAtLte;
-    private String capturedAtLt;
-    private String paymentMethod;
+    private String payoutDestinationType;
+    private Map<String, String> metadata;
     private String status;
 
     @Builder
-    public PaymentList(Integer limit, String cursor, String createdAtGte, String createdAtGt, String createdAtLte,
-                       String createdAtLt, String capturedAtGte, String capturedAtGt, String capturedAtLte,
-                       String capturedAtLt, String paymentMethod, String status) {
+    public PayoutList(Integer limit, String cursor, String createdAtGte, String createdAtGt, String createdAtLte,
+                      String createdAtLt, String payoutDestinationType, String status, Map<String, String> metadata) {
         super(limit, cursor);
         this.createdAtGte = createdAtGte;
         this.createdAtGt = createdAtGt;
         this.createdAtLte = createdAtLte;
         this.createdAtLt = createdAtLt;
-        this.capturedAtGte = capturedAtGte;
-        this.capturedAtGt = capturedAtGt;
-        this.capturedAtLte = capturedAtLte;
-        this.capturedAtLt = capturedAtLt;
-        this.paymentMethod = paymentMethod;
+        this.payoutDestinationType = payoutDestinationType;
         this.status = status;
+        this.metadata = metadata;
     }
 
     @Override
@@ -55,23 +51,16 @@ public class PaymentList extends PaginatedRequest {
         if (createdAtLt != null) {
             params.add("created_at.lt=" + createdAtLt);
         }
-        if (capturedAtGte != null) {
-            params.add("captured_at.gte=" + capturedAtGte);
-        }
-        if (capturedAtGt != null) {
-            params.add("captured_at.gt=" + capturedAtGt);
-        }
-        if (capturedAtLte != null) {
-            params.add("captured_at.lte=" + capturedAtLte);
-        }
-        if (capturedAtLt != null) {
-            params.add("captured_at.lt=" + capturedAtLt);
-        }
-        if (paymentMethod != null) {
-            params.add("payment_method=" + paymentMethod);
+        if (payoutDestinationType != null) {
+            params.add("payout_destination.type=" + payoutDestinationType);
         }
         if (status != null) {
             params.add("status=" + status);
+        }
+        if (metadata != null) {
+            String key = metadata.keySet().stream().findFirst().orElseThrow();
+            String value = metadata.get(key);
+            params.add(URLEncoder.encode("metadata[%s]=%s".formatted(key, value), StandardCharsets.UTF_8));
         }
         return !params.isEmpty() ? String.join("&", params) : "";
     }

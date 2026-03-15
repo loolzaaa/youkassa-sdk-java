@@ -13,6 +13,7 @@ import ru.loolzaaa.youkassa.pojo.*;
 import ru.loolzaaa.youkassa.pojo.Receipt;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * This class represents Refund object.
@@ -33,6 +34,9 @@ import java.util.List;
 public class Refund implements RequestBody {
 
     private static final int MAX_DESCRIPTION_LENGTH = 250;
+    private static final int MAX_METADATA_SIZE = 16;
+    private static final int MAX_METADATA_KEY_LENGTH = 32;
+    private static final int MAX_METADATA_VALUE_LENGTH = 512;
 
     @JsonProperty("id")
     private String id;
@@ -62,6 +66,8 @@ public class Refund implements RequestBody {
     private RefundMethod refundMethodData;
     @JsonProperty("refund_authorization_details")
     private RefundAuthorizationDetails refundAuthorizationDetails;
+    @JsonProperty("metadata")
+    private Map<String, String> metadata;
 
     @Getter
     @Builder
@@ -110,6 +116,19 @@ public class Refund implements RequestBody {
         }
         if (refund.getRefundMethodData() != null) {
             refund.getRefundMethodData().validate();
+        }
+        if (refund.getMetadata() != null) {
+            if (refund.getMetadata().size() > MAX_METADATA_SIZE) {
+                throw new IllegalArgumentException("Incorrect metadata size. Max size: " + MAX_METADATA_SIZE);
+            }
+            for (Map.Entry<String, String> pair : refund.getMetadata().entrySet()) {
+                if (pair.getKey().length() > MAX_METADATA_KEY_LENGTH) {
+                    throw new IllegalArgumentException("Too long metadata key. Max Length: " + MAX_METADATA_KEY_LENGTH);
+                }
+                if (pair.getValue().length() > MAX_METADATA_VALUE_LENGTH) {
+                    throw new IllegalArgumentException("Too long metadata value. Max Length: " + MAX_METADATA_VALUE_LENGTH);
+                }
+            }
         }
     }
 }

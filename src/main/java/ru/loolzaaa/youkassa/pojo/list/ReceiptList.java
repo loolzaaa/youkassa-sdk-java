@@ -57,6 +57,6 @@ public class ReceiptList extends PaginatedRequest {
         if (status != null) {
             params.add("status=" + status);
         }
-        return params.size() > 0 ? String.join("&", params) : "";
+        return !params.isEmpty() ? String.join("&", params) : "";
     }
 }

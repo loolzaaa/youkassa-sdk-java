@@ -107,6 +107,8 @@ public class Payment implements RequestBody {
     private Receiver receiver;
     @JsonProperty("invoice_details")
     private InvoiceDetails invoiceDetails;
+    @JsonProperty("statements")
+    private List<Statement> statements;
 
     @Getter
     @Builder

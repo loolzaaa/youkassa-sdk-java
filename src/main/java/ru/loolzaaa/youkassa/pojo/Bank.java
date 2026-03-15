@@ -18,6 +18,7 @@ import ru.loolzaaa.youkassa.client.Validated;
 public class Bank implements Validated {
 
     private static final String BIC_PATTERN = "\\d{9}";
+    private static final int NAME_MAX_LENGTH = 45;
 
     @JsonProperty("name")
     private String name;
@@ -32,6 +33,9 @@ public class Bank implements Validated {
     public void validate() {
         if (name == null) {
             throw new IllegalArgumentException("Name must not be null");
+        }
+        if (name.length() > NAME_MAX_LENGTH) {
+            throw new IllegalArgumentException("Name length must not exceed 45 symbols");
         }
         if (bic == null) {
             throw new IllegalArgumentException("Bic must not be null");

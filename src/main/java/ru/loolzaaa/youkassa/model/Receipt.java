@@ -53,6 +53,8 @@ public class Receipt implements RequestBody {
     private Customer customer;
     @JsonProperty("items")
     private List<Item> items;
+    @JsonProperty("internet")
+    private Boolean internet;
     @JsonProperty("send")
     private Boolean send;
     @JsonProperty("additional_user_props")
@@ -63,6 +65,8 @@ public class Receipt implements RequestBody {
     private String onBehalfOf;
     @JsonProperty("tax_system_code")
     private Integer taxSystemCode;
+    @JsonProperty("timezone")
+    private Integer timezone;
     @JsonProperty("receipt_industry_details")
     private List<ReceiptIndustryDetail> receiptIndustryDetails;
     @JsonProperty("receipt_operational_details")

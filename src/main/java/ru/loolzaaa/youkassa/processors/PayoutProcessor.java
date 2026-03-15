@@ -1,8 +1,11 @@
 package ru.loolzaaa.youkassa.processors;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import lombok.RequiredArgsConstructor;
 import ru.loolzaaa.youkassa.client.ApiClient;
+import ru.loolzaaa.youkassa.client.PaginatedResponse;
 import ru.loolzaaa.youkassa.model.Payout;
+import ru.loolzaaa.youkassa.pojo.list.PayoutList;
 
 import java.util.Map;
 import java.util.UUID;
@@ -51,6 +54,36 @@ public class PayoutProcessor {
         }
         String path = BASE_PATH + "/" + payoutId;
         return client.sendRequest("GET", path, null, null, Payout.class);
+    }
+
+    /**
+     * Receive information about all payouts
+     * with some filter conditions.
+     *
+     * @param payoutList collection with filter conditions
+     * @return listed payout entities
+     * @see PaginatedResponse
+     */
+
+    public PaginatedResponse<Payout> findAll(PayoutList payoutList) {
+        String path = BASE_PATH + payoutList.toQueryString();
+        return client.sendRequest("GET", path, null, null, new TypeReference<>() {
+        });
+    }
+
+    /**
+     * Search information about payouts
+     * with metadata filter conditions.
+     *
+     * @param payoutList collection with filter conditions
+     * @return listed payout entities
+     * @see PaginatedResponse
+     */
+
+    public PaginatedResponse<Payout> searchByMetadata(PayoutList payoutList) {
+        String path = BASE_PATH + "/search" + payoutList.toQueryString();
+        return client.sendRequest("GET", path, null, null, new TypeReference<>() {
+        });
     }
 
     /**

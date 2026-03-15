@@ -73,6 +73,6 @@ public class DealList extends PaginatedRequest {
         if (fullTextSearch != null) {
             params.add("full_text_search=" + fullTextSearch);
         }
-        return params.size() > 0 ? String.join("&", params) : "";
+        return !params.isEmpty() ? String.join("&", params) : "";
     }
 }

@@ -20,7 +20,7 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class VatData implements Validated {
 
-    private static final List<String> AVAILABLE_RATES = List.of("5", "7", "10", "20");
+    private static final List<String> AVAILABLE_RATES = List.of("5", "7", "10", "20", "22");
 
     @JsonProperty("type")
     private String type;

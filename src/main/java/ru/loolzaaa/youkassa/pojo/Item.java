@@ -53,6 +53,8 @@ public class Item implements Validated {
     private String agentType;
     @JsonProperty("product_code")
     private String productCode;
+    @JsonProperty("planned_status")
+    private Integer plannedStatus;
     @JsonProperty("mark_code_info")
     private MarkCodeInfo markCodeInfo;
     @JsonProperty("mark_mode")
@@ -232,5 +234,7 @@ public class Item implements Validated {
         public static final int NDS_7 = 8;
         public static final int NDS_5_105 = 9;
         public static final int NDS_7_107 = 10;
+        public static final int NDS_22 = 11;
+        public static final int NDS_22_122 = 12;
     }
 }
